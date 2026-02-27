@@ -8,9 +8,9 @@ interface WorkItemDetailProps {
 
 const WorkItemDetail = ({ item, onBack }: WorkItemDetailProps) => {
   const activities = [
-    { title: 'Entered Application Flow', subtitle: 'Entered Application Flow', icon: ArrowDown, color: '#16a34a', bg: '#dcfce7', time: '5d' },
-    { title: 'Routed to Screening Stage', subtitle: 'Default routing', icon: ArrowRight, color: '#4338ca', bg: '#ede9fe', time: '4d' },
-    { title: 'Entered Pre-Qualification Questionnaire', subtitle: 'Default routing', icon: ArrowDown, color: '#4338ca', bg: '#ede9fe', time: '4d' },
+    { title: 'Entered Application Flow', subtitle: 'Entered Application Flow', icon: ArrowDown, color: '#9ca3af', bg: '#f3f4f6', time: '5d' },
+    { title: 'Routed to Screening Stage', subtitle: 'Default routing', icon: ArrowRight, color: '#9ca3af', bg: '#f3f4f6', time: '4d' },
+    { title: 'Entered Pre-Qualification Questionnaire', subtitle: 'Default routing', icon: ArrowDown, color: '#9ca3af', bg: '#f3f4f6', time: '4d' },
     { title: 'Submitted Pre-Qualification Questionnaire', subtitle: 'Default routing', icon: CheckCircle, color: '#4338ca', bg: '#ede9fe', time: '4d' },
     { title: 'Routed to Screening Stage', subtitle: 'Condition-based routing', icon: ArrowRight, color: '#4338ca', bg: '#ede9fe', time: '4d' },
     { title: 'ACLS Certification Upload', subtitle: 'In progress', icon: Clock, color: '#ea580c', bg: '#fed7aa', time: '4d' }
