@@ -88,11 +88,13 @@ const WorkItemDetail = ({ item, onBack }: WorkItemDetailProps) => {
             <div className="space-y-4">
               {activities.map((activity, idx) => {
                 const IconComponent = activity.icon;
+                const isInProgress = activity.subtitle === 'In progress';
+                const bgColor = isInProgress ? activity.bg : '#f3f4f6';
                 return (
                   <div key={idx} className="flex gap-4 justify-between items-start">
                     <div className="flex gap-4 flex-1">
                       <div className="flex flex-col items-center">
-                        <div className="flex items-center justify-center w-8 h-8" style={{ backgroundColor: activity.bg, borderRadius: '10px' }}>
+                        <div className="flex items-center justify-center w-8 h-8" style={{ backgroundColor: bgColor, borderRadius: '10px' }}>
                           <IconComponent className="w-4 h-4" style={{ color: activity.color }} />
                         </div>
                         {idx < activities.length - 1 && (
@@ -117,11 +119,13 @@ const WorkItemDetail = ({ item, onBack }: WorkItemDetailProps) => {
             <div className="space-y-4">
               {agentActions.map((action, idx) => {
                 const IconComponent = action.icon;
+                const isInProgress = action.subtitle === 'In progress';
+                const bgColor = isInProgress ? action.bg : '#f3f4f6';
                 return (
                   <div key={idx} className="flex gap-4 justify-between items-start">
                     <div className="flex gap-4 flex-1">
                       <div className="flex flex-col items-center">
-                        <div className="flex items-center justify-center w-8 h-8" style={{ backgroundColor: action.bg, borderRadius: '10px' }}>
+                        <div className="flex items-center justify-center w-8 h-8" style={{ backgroundColor: bgColor, borderRadius: '10px' }}>
                           <IconComponent className="w-4 h-4" style={{ color: action.color }} />
                         </div>
                         {idx < agentActions.length - 1 && (
