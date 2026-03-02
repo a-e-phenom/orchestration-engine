@@ -57,9 +57,19 @@ const Canvas = ({ activeTab }: CanvasProps) => {
             setShowRulePanel(false);
             setSelectedNodeId(null);
           }}
-          className="bg-white rounded-2xl p-0 w-72 text-left hover:bg-gray-50" style={{
+          className="bg-white rounded-2xl p-0 w-72 text-left hover:bg-gray-50 transition-all" style={{
             border: showPanel ? '2px solid #4D3EE0' : '1px solid #E8EAEE',
             boxShadow: 'inset 0 3px 0 0 #D2CEF7'
+          }}
+          onMouseEnter={(e) => {
+            if (!showPanel) {
+              e.currentTarget.style.borderColor = '#4338ca';
+            }
+          }}
+          onMouseLeave={(e) => {
+            if (!showPanel) {
+              e.currentTarget.style.borderColor = '#E8EAEE';
+            }
           }}>
           <div className="flex items-center gap-2 mb-4 p-3 w-full border-b border-[#E8EAEE]">
             <Bot className="w-5 h-5 flex-shrink-0" style={{ color: '#4D3EE0' }} />
@@ -100,9 +110,19 @@ const Canvas = ({ activeTab }: CanvasProps) => {
                   setShowPanel(false);
                   setSelectedNodeId(null);
                 }}
-                className="bg-white rounded-xl px-3 pb-2 pt-2.5 shadow-sm hover:bg-gray-50 transition-colors w-full text-left" style={{
+                className="bg-white rounded-xl px-3 pb-2 pt-2.5 shadow-sm hover:bg-gray-50 transition-all w-full text-left" style={{
                   border: showRulePanel ? '2px solid #4D3EE0' : '1px solid #E8EAEE',
                   boxShadow: 'inset 0 3px 0 0 #BA4800'
+                }}
+                onMouseEnter={(e) => {
+                  if (!showRulePanel) {
+                    e.currentTarget.style.borderColor = '#4338ca';
+                  }
+                }}
+                onMouseLeave={(e) => {
+                  if (!showRulePanel) {
+                    e.currentTarget.style.borderColor = '#E8EAEE';
+                  }
                 }}>
                 <div className="flex items-center gap-2">
                   <div className="flex items-center gap-1.5">
