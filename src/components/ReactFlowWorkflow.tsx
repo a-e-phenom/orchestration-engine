@@ -66,9 +66,9 @@ const CustomEdge = (props: EdgeProps) => {
         </foreignObject>
       )}
       {data?.label && (
-        <foreignObject x={midX - 30} y={midY - 25} width={60} height={20}>
+        <foreignObject x={midX - 30} y={midY - 25} width={60} height={20} style={{ zIndex: 1000 }}>
           <div className="flex items-center justify-center w-full h-full">
-            <span className="text-xs font-medium px-2 py-1 bg-white border border-gray-200 rounded-full text-gray-700 whitespace-nowrap">
+            <span className="text-xs font-medium px-2 py-1 bg-white border border-gray-200 text-gray-700 whitespace-nowrap" style={{ borderRadius: '6px' }}>
               {data.label}
             </span>
           </div>
@@ -300,13 +300,6 @@ const ReactFlowWorkflow = ({ activities, stageId, branchConfig }: ReactFlowWorkf
             type: 'custom',
           });
         }
-      });
-    } else {
-      newEdges.push({
-        id: `${lastActivityId}-to-end`,
-        source: lastActivityId,
-        target: 'end',
-        type: 'custom',
       });
     }
 
