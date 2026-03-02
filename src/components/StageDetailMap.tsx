@@ -60,12 +60,7 @@ const StageDetailMap = ({ stageName, onBack }: StageDetailMapProps) => {
                           </div>
                           <span className="text-sm font-medium text-gray-900">{activity.label}</span>
                         </div>
-                        <span className="text-xs px-2 py-1 rounded" style={{
-                          backgroundColor: activity.type === 'automation' ? '#EDE9FE' : '#F3F4F6',
-                          color: activity.type === 'automation' ? '#5E48B8' : '#6B7280'
-                        }}>
-                          {activity.type === 'automation' ? 'Automated' : 'Manual'}
-                        </span>
+                       
                       </div>
                     </button>
                     {index < activities.length - 1 && <ConnectionLine />}
