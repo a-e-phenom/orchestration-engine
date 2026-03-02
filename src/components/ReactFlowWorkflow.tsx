@@ -97,7 +97,7 @@ const ActivityNodeComponent = ({ data }: { data: any }) => {
   if (isStart || isEnd) {
     return (
       <div
-        className="bg-white rounded-xl px-3 pb-2 pt-2.5 w-full"
+        className="bg-white rounded-xl px-3 pb-2 pt-2.5 w-full flex items-center justify-center"
         style={{
           border: '1px solid ' + borderColor,
           boxShadow: boxShadowStyle
