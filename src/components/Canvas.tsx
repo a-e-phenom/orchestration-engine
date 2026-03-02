@@ -6,7 +6,7 @@ import StageDetailMap from './StageDetailMap';
 import Workroom from './Workroom';
 import Operations from './Operations';
 import DataPage from './DataPage';
-import { Plus, Layers, Zap, AlertCircle, FileText, Bot, GitBranch, GitCompareArrows, X, HelpCircle, MoreVertical, Shield, File, Calendar, MessageSquare, Zap as ZapIcon, ArrowRight, SquareArrow } from 'lucide-react';
+import { Plus, Layers, Zap, AlertCircle, FileText, Bot, GitBranch, GitCompareArrows, X, HelpCircle, MoreVertical, Shield, File, Calendar, MessageSquare, Zap as ZapIcon, ArrowRight, ArrowUpRight } from 'lucide-react';
 
 interface Node {
   id: string;
@@ -407,7 +407,7 @@ const Canvas = ({ activeTab }: CanvasProps) => {
                 setSelectedNodeId(null);
               }}
               className="w-full flex items-center justify-center gap-2 px-4 py-2 bg-white hover:bg-gray-50 border border-gray-200 text-indigo-700 rounded-lg font-medium transition-colors">
-              <SquareArrow className="w-4 h-4" />
+              <ArrowUpRight className="w-4 h-4" />
               Open Subflow
             </button>
           </div>
