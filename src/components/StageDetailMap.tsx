@@ -1,4 +1,4 @@
-import { ArrowLeft, GitCompareArrows, Zap } from 'lucide-react';
+import { ArrowLeft, GitCompareArrows, Zap, FileText, BarChart3 } from 'lucide-react';
 import ConnectionLine from './ConnectionLine';
 
 interface StageDetailMapProps {
@@ -8,10 +8,10 @@ interface StageDetailMapProps {
 
 const StageDetailMap = ({ stageName, onBack }: StageDetailMapProps) => {
   const activities = [
-    { id: 1, label: 'Candidate Evaluation', type: 'automation' },
-    { id: 2, label: 'Document Review', type: 'activity' },
-    { id: 3, label: 'Interview Setup', type: 'automation' },
-    { id: 4, label: 'Feedback Collection', type: 'activity' }
+    { id: 1, label: 'Candidate Evaluation', type: 'automation', icon: Zap },
+    { id: 2, label: 'Document Review', type: 'activity', icon: FileText },
+    { id: 3, label: 'Interview Setup', type: 'automation', icon: BarChart3 },
+    { id: 4, label: 'Feedback Collection', type: 'activity', icon: FileText }
   ];
 
   return (
@@ -47,29 +47,31 @@ const StageDetailMap = ({ stageName, onBack }: StageDetailMapProps) => {
             <ConnectionLine />
 
             {/* Activities */}
-            <div className="flex flex-col gap-0" style={{ width: '264px' }}>
-              {activities.map((activity, index) => (
-                <div key={activity.id} className="flex flex-col gap-0">
-                  <button className="bg-white border border-gray-200 rounded-xl shadow-xs hover:border-indigo-700 transition-colors">
-                    <div className="flex items-center justify-between p-3">
-                      <div className="flex items-center gap-3">
-                        <div className="flex items-center gap-1 px-2 py-1 rounded-lg" style={{ backgroundColor: '#F4F6FA' }}>
-                          <Zap className="w-4 h-4 text-gray-600" />
-                          <span className="text-sm font-medium text-gray-600">{index + 1}</span>
+            <div className="flex flex-col gap-0" style={{ width: '280px' }}>
+              {activities.map((activity, index) => {
+                const ActivityIcon = activity.icon;
+                return (
+                  <div key={activity.id} className="flex flex-col gap-0">
+                    <button className="bg-white border border-gray-200 rounded-xl shadow-xs hover:border-indigo-700 transition-colors">
+                      <div className="flex items-center justify-between p-3">
+                        <div className="flex items-center gap-3">
+                          <div className="flex items-center justify-center p-2 rounded-lg" style={{ backgroundColor: '#EAE8FB' }}>
+                            <ActivityIcon className="w-4 h-4" style={{ color: '#5E48B8' }} />
+                          </div>
+                          <span className="text-sm font-medium text-gray-900">{activity.label}</span>
                         </div>
-                        <span className="text-sm font-medium text-gray-900">{activity.label}</span>
+                        <span className="text-xs px-2 py-1 rounded" style={{
+                          backgroundColor: activity.type === 'automation' ? '#EDE9FE' : '#F3F4F6',
+                          color: activity.type === 'automation' ? '#5E48B8' : '#6B7280'
+                        }}>
+                          {activity.type === 'automation' ? 'Automated' : 'Manual'}
+                        </span>
                       </div>
-                      <span className="text-xs px-2 py-1 rounded" style={{
-                        backgroundColor: activity.type === 'automation' ? '#EDE9FE' : '#F3F4F6',
-                        color: activity.type === 'automation' ? '#5E48B8' : '#6B7280'
-                      }}>
-                        {activity.type === 'automation' ? 'Automated' : 'Manual'}
-                      </span>
-                    </div>
-                  </button>
-                  {index < activities.length - 1 && <ConnectionLine />}
-                </div>
-              ))}
+                    </button>
+                    {index < activities.length - 1 && <ConnectionLine />}
+                  </div>
+                );
+              })}
             </div>
 
             {/* End Card */}
