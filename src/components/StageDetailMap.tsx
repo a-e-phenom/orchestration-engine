@@ -1,4 +1,4 @@
-import { ArrowLeft, GitCompareArrows, Zap, FileText, BarChart3, Check } from 'lucide-react';
+import { ArrowLeft, GitCompareArrows, Zap, FileText, BarChart3, Check, Bot, Cog, Users } from 'lucide-react';
 import ConnectionLine from './ConnectionLine';
 
 interface StageDetailMapProps {
@@ -32,16 +32,19 @@ const StageDetailMap = ({ stageName, onBack }: StageDetailMapProps) => {
   </div>
 
   {/* Right side tags */}
-  <div className="flex items-center gap-2">
-    <span className="px-3 py-1 text-sm rounded-full border border-gray-300 bg-white text-gray-700">
-      {x}% Agentic
-    </span>
-    <span className="px-3 py-1 text-sm rounded-full border border-gray-300 bg-white text-gray-700">
-      {y}% Automatic
-    </span>
-    <span className="px-3 py-1 text-sm rounded-full border border-gray-300 bg-white text-gray-700">
-      {z}% Human
-    </span>
+  <div className="flex items-center gap-3">
+    <div className="flex items-center gap-2 px-3 py-1.5 rounded-lg border border-gray-200 bg-white">
+      <Bot className="w-4 h-4 text-gray-600" />
+      <span className="text-sm text-gray-700">65% Agentic</span>
+    </div>
+    <div className="flex items-center gap-2 px-3 py-1.5 rounded-lg border border-gray-200 bg-white">
+      <Cog className="w-4 h-4 text-gray-600" />
+      <span className="text-sm text-gray-700">20% Automatic</span>
+    </div>
+    <div className="flex items-center gap-2 px-3 py-1.5 rounded-lg border border-gray-200 bg-white">
+      <Users className="w-4 h-4 text-gray-600" />
+      <span className="text-sm text-gray-700">15% Human</span>
+    </div>
   </div>
 </header>
 
