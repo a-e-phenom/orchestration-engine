@@ -94,12 +94,30 @@ const ActivityNodeComponent = ({ data }: { data: any }) => {
 
   const Icon = data.icon;
 
+  if (isStart || isEnd) {
+    return (
+      <div
+        className="bg-white rounded-xl px-3 pb-2 pt-2.5 shadow-sm min-w-[240px]"
+        style={{
+          border: '1px solid ' + borderColor,
+          boxShadow: boxShadowStyle
+        }}
+      >
+        <Handle type="target" position={Position.Top} />
+        <div className="flex items-center gap-2">
+          <Icon className="w-5 h-5" style={{ color: accentColor }} />
+          <span className="text-sm font-medium text-gray-700">{data.label}</span>
+        </div>
+        <Handle type="source" position={Position.Bottom} />
+      </div>
+    );
+  }
+
   return (
     <div
       className={`${bgColor} rounded-xl p-3 shadow-md min-w-[240px] ${isAgent ? 'bg-indigo-50' : ''}`}
       style={{
-        border: '1px solid ' + borderColor,
-        boxShadow: (isStart || isEnd) ? boxShadowStyle : undefined
+        border: '1px solid ' + borderColor
       }}
     >
       <Handle type="target" position={Position.Top} />
