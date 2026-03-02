@@ -14,7 +14,7 @@ const Header = ({ activeTab, onTabChange }: HeaderProps) => {
   ];
 
   return (
-    <header className="bg-white border-b border-gray-200 px-[24px] flex items-center justify-between">
+    <header className="bg-gray-50 border-b border-gray-200 px-[24px] flex items-center justify-between">
       <div className="flex items-center gap-4">
         <button className="w-6 h-6 flex items-center justify-center rounded-md hover:bg-gray-50 transition-colors" style={{ borderColor: '#8C95A8', borderWidth: '1px' }}>
           <ChevronLeft className="w-4 h-4 text-gray-700 hover:text-gray-900" />

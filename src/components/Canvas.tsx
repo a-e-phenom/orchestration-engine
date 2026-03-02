@@ -391,29 +391,26 @@ const Canvas = ({ activeTab }: CanvasProps) => {
                   {selectedNodeId === '3' && 'Standard interview stage with 2 interviews'}
                   {selectedNodeId === '4' && 'Final stage for offer preparation and approval'}
                 </p>
-                          <div className="px-6 py-4">
-            <button
-              onClick={() => {
-                setStageDetailView(selectedNodeId);
-                setSelectedNodeId(null);
-              }}
-              className="w-full flex items-center justify-center  bg-white hover:bg-gray-50 border border-gray-200 text-gray-700 rounded-lg font-medium transition-colors">
-              <ArrowRight className="w-4 h-4" />
-              Open Subflow
-            </button>
-          </div>
               </div>
-              
             </div>
             <button
               onClick={() => setSelectedNodeId(null)}
               className="p-1 hover:bg-gray-100 rounded transition-colors flex-shrink-0">
               <X className="w-5 h-5 text-gray-400" />
             </button>
-            
           </div>
 
-
+          <div className="px-6 py-4 border-b border-gray-200">
+            <button
+              onClick={() => {
+                setStageDetailView(selectedNodeId);
+                setSelectedNodeId(null);
+              }}
+              className="w-full flex items-center justify-center gap-2 px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg font-medium transition-colors">
+              <ArrowRight className="w-4 h-4" />
+              Open Subflow
+            </button>
+          </div>
 
           <div className="px-6 py-6">
             <div className="space-y-6">
