@@ -61,8 +61,8 @@ const StageDetailMap = ({ stageId, stageName, onBack }: StageDetailMapProps) => 
 
   const branchConfigs: { [key: string]: { [nodeId: string]: string[] } } = {
     '2': {
-      'activity-1': ['activity-2'],
-      'activity-2': ['activity-3', 'activity-4']
+      'activity-1': ['activity-2', 'activity-3'],
+      'activity-2': ['activity-4', 'end']
     }
   };
 
