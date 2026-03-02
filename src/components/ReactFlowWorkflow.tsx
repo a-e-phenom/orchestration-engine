@@ -283,12 +283,14 @@ const ReactFlowWorkflow = ({ activities, stageId, branchConfig }: ReactFlowWorkf
     if (branchConfig && Object.keys(branchConfig).includes(lastActivityId)) {
       const branchNodeIds = branchConfig[lastActivityId];
       branchNodeIds.forEach((nodeId) => {
-        newEdges.push({
-          id: `${nodeId}-to-end`,
-          source: nodeId,
-          target: 'end',
-          type: 'custom',
-        });
+        if (nodeId !== 'end') {
+          newEdges.push({
+            id: `${nodeId}-to-end`,
+            source: nodeId,
+            target: 'end',
+            type: 'custom',
+          });
+        }
       });
     } else {
       newEdges.push({
