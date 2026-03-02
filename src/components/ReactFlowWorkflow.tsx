@@ -15,7 +15,8 @@ import ReactFlow, {
 } from 'reactflow';
 import 'reactflow/dist/style.css';
 import { Zap, FileText, BarChart3, Check, Bot, Radio, Plus } from 'lucide-react';
-import * as dagre from 'dagre';
+// @ts-ignore
+import dagre from 'dagre';
 
 interface ActivityNode {
   id: string;
