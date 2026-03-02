@@ -31,21 +31,24 @@ const StageDetailMap = ({ stageName, onBack }: StageDetailMapProps) => {
     </h1>
   </div>
 
-  {/* Right side tags */}
-  <div className="flex items-center gap-3">
-    <div className="flex items-center gap-2 px-3 py-1.5 rounded-lg border border-gray-200 bg-white">
-      <Bot className="w-4 h-4 text-gray-600" />
-      <span className="text-sm text-gray-700">65% Agentic</span>
-    </div>
-    <div className="flex items-center gap-2 px-3 py-1.5 rounded-lg border border-gray-200 bg-white">
-      <Cog className="w-4 h-4 text-gray-600" />
-      <span className="text-sm text-gray-700">20% Automatic</span>
-    </div>
-    <div className="flex items-center gap-2 px-3 py-1.5 rounded-lg border border-gray-200 bg-white">
-      <Users className="w-4 h-4 text-gray-600" />
-      <span className="text-sm text-gray-700">15% Human</span>
-    </div>
+ {/* Right side tags */}
+<div className="flex items-center gap-2">
+  <div className="flex items-center gap-1.5 px-2 py-1 rounded-md border border-gray-200 bg-white">
+    <Bot className="w-3.5 h-3.5 text-indigo-500" />
+    <span className="text-xs text-gray-700">65% Agentic</span>
   </div>
+
+  <div className="flex items-center gap-1.5 px-2 py-1 rounded-md border border-gray-200 bg-white">
+    <Cog className="w-3.5 h-3.5 text-orange-500" />
+    <span className="text-xs text-gray-700">20% Automatic</span>
+  </div>
+
+  <div className="flex items-center gap-1.5 px-2 py-1 rounded-md border border-gray-200 bg-white">
+    <Users className="w-3.5 h-3.5 text-green-500" />
+    <span className="text-xs text-gray-700">15% Human</span>
+  </div>
+</div>
+
 </header>
 
 
