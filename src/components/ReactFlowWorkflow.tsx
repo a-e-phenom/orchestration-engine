@@ -111,7 +111,7 @@ const ActivityNodeComponent = ({ data }: { data: any }) => {
   if (isStart || isEnd) {
     return (
       <div
-        className="bg-white rounded-xl px-4 py-3 w-full flex items-center justify-center shadow-sm hover:shadow-md transition-shadow"
+        className="bg-white rounded-xl px-4 py-3 min-w-[280px] flex items-center justify-center shadow-sm hover:shadow-md transition-shadow"
         style={{
           border: '1.5px solid ' + borderColor,
           boxShadow: boxShadowStyle
