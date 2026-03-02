@@ -61,7 +61,7 @@ const StageDetailMap = ({ stageName, onBack }: StageDetailMapProps) => {
                             </div>
                             <span className="text-sm font-medium text-gray-900">{activity.label}</span>
                           </div>
-                          <span className="text-xs py-1" style={{ color: '#637085' }}>{activity.description}</span>
+                          <span className="text-xs pb-1 pt-1.5" style={{ color: '#637085' }}>{activity.description}</span>
                         </div>
 
                       </div>
