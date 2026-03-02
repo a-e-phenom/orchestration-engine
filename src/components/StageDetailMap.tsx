@@ -16,14 +16,35 @@ const StageDetailMap = ({ stageName, onBack }: StageDetailMapProps) => {
 
   return (
     <div className="flex-1 overflow-auto relative flex flex-col">
-      <header className="bg-white border-b border-gray-200 px-6 flex items-center h-16 flex-shrink-0">
-        <button
-          onClick={onBack}
-          className="p-2 hover:bg-gray-100 rounded-lg transition-colors flex-shrink-0 -ml-2">
-          <ArrowLeft className="w-5 h-5 text-gray-600" />
-        </button>
-        <h1 className="text-lg font-medium text-gray-900 ml-4">{stageName} Subflow</h1>
-      </header>
+      <header className="bg-white border-b border-gray-200 px-6 flex items-center h-16 flex-shrink-0 justify-between">
+  {/* Left side */}
+  <div className="flex items-center">
+    <button
+      onClick={onBack}
+      className="p-2 hover:bg-gray-100 rounded-lg transition-colors flex-shrink-0 -ml-2"
+      aria-label="Go back"
+    >
+      <ArrowLeft className="w-5 h-5 text-gray-600" />
+    </button>
+    <h1 className="text-lg font-medium text-gray-900 ml-4">
+      {stageName} Subflow
+    </h1>
+  </div>
+
+  {/* Right side tags */}
+  <div className="flex items-center gap-2">
+    <span className="px-3 py-1 text-sm rounded-full border border-gray-300 bg-white text-gray-700">
+      {x}% Agentic
+    </span>
+    <span className="px-3 py-1 text-sm rounded-full border border-gray-300 bg-white text-gray-700">
+      {y}% Automatic
+    </span>
+    <span className="px-3 py-1 text-sm rounded-full border border-gray-300 bg-white text-gray-700">
+      {z}% Human
+    </span>
+  </div>
+</header>
+
 
       <div className="flex-1 overflow-auto relative" style={{
         backgroundImage: 'radial-gradient(circle, #e5e7eb 1px, transparent 1px)',
