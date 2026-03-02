@@ -10,9 +10,11 @@ import ReactFlow, {
   Position,
   Background,
   Controls,
+  getSmoothStepPath,
+  EdgeProps,
 } from 'reactflow';
 import 'reactflow/dist/style.css';
-import { Zap, FileText, BarChart3, Check, Bot, Radio } from 'lucide-react';
+import { Zap, FileText, BarChart3, Check, Bot, Radio, Plus } from 'lucide-react';
 
 interface ActivityNode {
   id: string;
@@ -26,6 +28,55 @@ interface ReactFlowWorkflowProps {
   activities: ActivityNode[];
   stageId: string;
 }
+
+const CustomEdge = (props: EdgeProps) => {
+  const { sourceX, sourceY, targetX, targetY } = props;
+  const [isHovering, setIsHovering] = useState(false);
+
+  const midX = (sourceX + targetX) / 2;
+  const midY = (sourceY + targetY) / 2;
+
+  return (
+    <g>
+      <defs>
+        <marker
+          id="custom-arrow"
+          markerWidth="10"
+          markerHeight="10"
+          refX="9"
+          refY="3"
+          orient="auto"
+          markerUnits="strokeWidth"
+        >
+          <path d="M0,0 L0,6 L9,3 z" fill="#AEB5C2" />
+        </marker>
+      </defs>
+      <path
+        d={`M ${sourceX} ${sourceY} L ${sourceX} ${midY} L ${targetX} ${midY} L ${targetX} ${targetY}`}
+        fill="none"
+        stroke="#AEB5C2"
+        strokeWidth={2}
+        markerEnd="url(#custom-arrow)"
+      />
+      <circle
+        cx={midX}
+        cy={midY}
+        r={isHovering ? 12 : 6}
+        fill={isHovering ? '#8C95A8' : '#d1d5db'}
+        onMouseEnter={() => setIsHovering(true)}
+        onMouseLeave={() => setIsHovering(false)}
+        style={{ cursor: 'pointer', transition: 'all 0.2s' }}
+      />
+      {isHovering && (
+        <foreignObject x={midX - 8} y={midY - 8} width={16} height={16}>
+          <div className="flex items-center justify-center w-full h-full">
+            <Plus className="w-4 h-4 text-white" strokeWidth={3} />
+          </div>
+        </foreignObject>
+      )}
+    </g>
+  );
+};
 
 const ActivityNodeComponent = ({ data }: { data: any }) => {
   const isAgent = data.type === 'agent';
@@ -121,16 +172,14 @@ const ReactFlowWorkflow = ({ activities, stageId }: ReactFlowWorkflowProps) => {
           id: `start-to-${nodeId}`,
           source: 'start',
           target: nodeId,
-          animated: true,
-          style: { stroke: '#6366f1', strokeWidth: 2 },
+          type: 'custom',
         });
       } else {
         newEdges.push({
           id: `activity-${activities[index - 1].id}-to-${nodeId}`,
           source: `activity-${activities[index - 1].id}`,
           target: nodeId,
-          animated: true,
-          style: { stroke: '#6366f1', strokeWidth: 2 },
+          type: 'custom',
         });
       }
 
@@ -153,8 +202,7 @@ const ReactFlowWorkflow = ({ activities, stageId }: ReactFlowWorkflowProps) => {
       id: `activity-${activities[activities.length - 1].id}-to-end`,
       source: `activity-${activities[activities.length - 1].id}`,
       target: 'end',
-      animated: true,
-      style: { stroke: '#16a34a', strokeWidth: 2 },
+      type: 'custom',
     });
 
     setNodes(newNodes);
@@ -165,12 +213,16 @@ const ReactFlowWorkflow = ({ activities, stageId }: ReactFlowWorkflowProps) => {
     (connection: Connection) =>
       setEdges((eds) =>
         addEdge(
-          { ...connection, animated: true, style: { stroke: '#6366f1', strokeWidth: 2 } },
+          { ...connection, type: 'custom' },
           eds
         )
       ),
     [setEdges]
   );
+
+  const edgeTypes = {
+    custom: CustomEdge,
+  };
 
   return (
     <div className="w-full h-full">
@@ -181,6 +233,7 @@ const ReactFlowWorkflow = ({ activities, stageId }: ReactFlowWorkflowProps) => {
         onEdgesChange={onEdgesChange}
         onConnect={onConnect}
         nodeTypes={nodeTypes}
+        edgeTypes={edgeTypes}
         fitView
       >
         <Background />
