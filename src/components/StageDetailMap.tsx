@@ -128,26 +128,23 @@ const StageDetailMap = ({ stageId, stageName, onBack }: StageDetailMapProps) => 
                 if (isAgent) {
                   return (
                     <div key={activity.id} className="flex flex-col gap-0">
-                      <div className="relative">
-                        <div className="absolute inset-0 rounded-xl" style={{
-                          backgroundImage: 'linear-gradient(135deg, #818CF8 0%, #E9D5FF 100%)',
-                          padding: '2px'
-                        }}>
-                          <div className="h-full rounded-xl" style={{
-                            backgroundColor: '#F3E8FF',
-                            border: '2px dashed #4C1D95'
-                          }} />
-                        </div>
-                        <button className="relative bg-gradient-to-br from-indigo-50 to-purple-50 rounded-xl shadow-xs hover:shadow-md transition-all w-full">
-                          <div className="flex items-center justify-between p-3">
-                            <div className="flex flex-col gap-1.5">
-                              <div className="flex items-center gap-3">
-                                <div className="flex items-center justify-center p-2 rounded-lg" style={{ backgroundColor: '#DDD6FE' }}>
-                                  <ActivityIcon className="w-4 h-4" style={{ color: '#4F46E5' }} />
+                      <div className="relative p-px" style={{
+                        backgroundImage: 'linear-gradient(135deg, #818CF8 0%, #E9D5FF 100%)',
+                        borderRadius: '12px'
+                      }}>
+                        <button className="relative bg-white rounded-[11px] shadow-xs hover:shadow-md transition-all w-full">
+                          <div className="relative p-3">
+                            <div className="absolute inset-3 rounded-lg border-2 border-dashed" style={{ borderColor: '#4C1D95' }} />
+                            <div className="relative flex items-center justify-between">
+                              <div className="flex flex-col gap-1.5">
+                                <div className="flex items-center gap-3">
+                                  <div className="flex items-center justify-center p-2 rounded-lg" style={{ backgroundColor: '#EAE8FB' }}>
+                                    <Bot className="w-4 h-4" style={{ color: '#5E48B8' }} />
+                                  </div>
+                                  <span className="text-sm font-medium text-gray-900">{activity.label}</span>
                                 </div>
-                                <span className="text-sm font-medium text-gray-900">{activity.label}</span>
+                                <span className="text-xs pb-1 pt-1.5" style={{ color: '#637085' }}>{activity.description}</span>
                               </div>
-                              <span className="text-xs pb-1 pt-1.5" style={{ color: '#637085' }}>{activity.description}</span>
                             </div>
                           </div>
                         </button>
