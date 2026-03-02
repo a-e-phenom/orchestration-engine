@@ -15,25 +15,23 @@ const StageDetailMap = ({ stageName, onBack }: StageDetailMapProps) => {
   ];
 
   return (
-    <div className="flex-1 overflow-auto relative flex flex-col" style={{
-      backgroundImage: 'radial-gradient(circle, #e5e7eb 1px, transparent 1px)',
-      backgroundSize: '24px 24px',
-      backgroundColor: '#f9fafb'
-    }}>
-      <div className="border-b border-[#E8EAEE]"></div>
+    <div className="flex-1 overflow-auto relative flex flex-col">
+      <header className="bg-white border-b border-gray-200 px-6 flex items-center h-16 flex-shrink-0">
+        <button
+          onClick={onBack}
+          className="p-2 hover:bg-gray-100 rounded-lg transition-colors flex-shrink-0 -ml-2">
+          <ArrowLeft className="w-5 h-5 text-gray-600" />
+        </button>
+        <h1 className="text-lg font-semibold text-gray-900 ml-4">{stageName}</h1>
+      </header>
 
-      <div className="p-8 flex flex-col items-center min-h-full">
-        <div className="max-w-4xl mx-auto w-full">
-          <div className="flex items-center gap-3 mb-8">
-            <button
-              onClick={onBack}
-              className="p-2 hover:bg-gray-200 rounded-lg transition-colors flex-shrink-0">
-              <ArrowLeft className="w-5 h-5 text-gray-600" />
-            </button>
-            <h1 className="text-2xl font-semibold text-gray-900">{stageName}</h1>
-          </div>
-
-          <div className="flex flex-col items-center">
+      <div className="flex-1 overflow-auto relative" style={{
+        backgroundImage: 'radial-gradient(circle, #e5e7eb 1px, transparent 1px)',
+        backgroundSize: '24px 24px',
+        backgroundColor: '#f9fafb'
+      }}>
+        <div className="p-8 flex flex-col items-center min-h-full">
+        <div className="max-w-4xl mx-auto w-full flex flex-col items-center">
             {/* Rule Evaluation Header */}
             <div className="mb-0">
               <button className="bg-white rounded-xl px-3 pb-2 pt-2.5 shadow-sm hover:bg-gray-50 transition-all w-full text-left border border-[#E8EAEE]" style={{
