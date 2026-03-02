@@ -8,10 +8,10 @@ interface StageDetailMapProps {
 
 const StageDetailMap = ({ stageName, onBack }: StageDetailMapProps) => {
   const activities = [
-    { id: 1, label: 'Candidate Evaluation', type: 'automation', icon: Zap },
-    { id: 2, label: 'Document Review', type: 'activity', icon: FileText },
-    { id: 3, label: 'Interview Setup', type: 'automation', icon: BarChart3 },
-    { id: 4, label: 'Feedback Collection', type: 'activity', icon: FileText }
+    { id: 1, label: 'Candidate Evaluation', type: 'automation', icon: Zap, description: 'Automated skill scoring and ranking' },
+    { id: 2, label: 'Document Review', type: 'activity', icon: FileText, description: 'Resume and portfolio analysis' },
+    { id: 3, label: 'Interview Setup', type: 'automation', icon: BarChart3, description: 'Schedule and prepare interview slots' },
+    { id: 4, label: 'Feedback Collection', type: 'activity', icon: FileText, description: 'Gather interviewer assessments' }
   ];
 
   return (
@@ -54,13 +54,16 @@ const StageDetailMap = ({ stageName, onBack }: StageDetailMapProps) => {
                   <div key={activity.id} className="flex flex-col gap-0">
                     <button className="bg-white border border-gray-200 rounded-xl shadow-xs hover:border-indigo-700 transition-colors">
                       <div className="flex items-center justify-between p-3">
-                        <div className="flex items-center gap-3">
-                          <div className="flex items-center justify-center p-2 rounded-lg" style={{ backgroundColor: '#EAE8FB' }}>
-                            <ActivityIcon className="w-4 h-4" style={{ color: '#5E48B8' }} />
+                        <div className="flex flex-col gap-1.5">
+                          <div className="flex items-center gap-3">
+                            <div className="flex items-center justify-center p-2 rounded-lg" style={{ backgroundColor: '#EAE8FB' }}>
+                              <ActivityIcon className="w-4 h-4" style={{ color: '#5E48B8' }} />
+                            </div>
+                            <span className="text-sm font-medium text-gray-900">{activity.label}</span>
                           </div>
-                          <span className="text-sm font-medium text-gray-900">{activity.label}</span>
+                          <span className="text-xs" style={{ color: '#637085' }}>{activity.description}</span>
                         </div>
-                       
+
                       </div>
                     </button>
                     {index < activities.length - 1 && <ConnectionLine />}
