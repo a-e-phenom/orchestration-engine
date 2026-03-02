@@ -81,7 +81,7 @@ const StageDetailMap = ({ stageName, onBack }: StageDetailMapProps) => {
                 boxShadow: 'inset 0 3px 0 0 #16a34a'
               }}>
                 <div className="flex items-center gap-2">
-                  <div className="flex items-center justify-center p-2 rounded-lg" style={{ backgroundColor: '#DCF4E1' }}>
+                  <div className="flex items-center justify-center p-0 rounded-lg">
                     <Check className="w-4 h-4" style={{ color: '#16a34a' }} />
                   </div>
                   <span className="text-sm font-medium text-gray-700">End</span>
