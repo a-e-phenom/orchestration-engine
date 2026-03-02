@@ -38,41 +38,18 @@ const CustomEdge = (props: EdgeProps) => {
   const midY = (sourceY + targetY) / 2;
   const dx = targetX - sourceX;
   const dy = targetY - sourceY;
-  const distance = Math.sqrt(dx * dx + dy * dy);
-  const ratio = distance > 0 ? 30 / distance : 0;
-  const startX = sourceX + dx * ratio;
-  const startY = sourceY + dy * ratio;
-  const endX = targetX - dx * ratio;
-  const endY = targetY - dy * ratio;
 
   return (
     <g>
       <path
-        d={`M ${startX} ${startY} L ${startX} ${midY} L ${endX} ${midY} L ${endX} ${endY}`}
+        d={`M ${sourceX} ${sourceY} L ${sourceX} ${midY} L ${targetX} ${midY} L ${targetX} ${targetY}`}
         fill="none"
         stroke="#D1D5DB"
         strokeWidth={2}
         strokeLinecap="round"
         strokeLinejoin="round"
-      />
-      <defs>
-        <marker
-          id="arrowhead"
-          markerWidth="10"
-          markerHeight="10"
-          refX="9"
-          refY="3"
-          orient="auto"
-        >
-          <polygon points="0 0, 10 3, 0 6" fill="#D1D5DB" />
-        </marker>
-      </defs>
-      <path
-        d={`M ${endX} ${endY} L ${endX + (dx > 0 ? 15 : -15)} ${endY}`}
-        fill="none"
-        stroke="#D1D5DB"
-        strokeWidth={2}
-        markerEnd="url(#arrowhead)"
+        rx="8"
+        ry="8"
       />
       <circle
         cx={midX}
@@ -175,7 +152,7 @@ const nodeTypes = {
 const getLayoutedElements = (nodes: Node[], edges: Edge[]) => {
   const nodeHeight = 100;
   const nodeWidth = 280;
-  const verticalGap = 160;
+  const verticalGap = 100;
   const horizontalGap = 120;
 
   const levels: { [key: string]: number } = {};
