@@ -1,4 +1,4 @@
-import { ArrowLeft, GitCompareArrows, Zap, FileText, BarChart3 } from 'lucide-react';
+import { ArrowLeft, GitCompareArrows, Zap, FileText, BarChart3, Check } from 'lucide-react';
 import ConnectionLine from './ConnectionLine';
 
 interface StageDetailMapProps {
@@ -78,10 +78,12 @@ const StageDetailMap = ({ stageName, onBack }: StageDetailMapProps) => {
             <div className="flex flex-col items-center gap-0">
               <ConnectionLine isShort />
               <div className="bg-white rounded-xl px-3 pb-2 pt-2.5 shadow-sm w-full text-left border border-[#E8EAEE]" style={{
-                boxShadow: 'inset 0 3px 0 0 #22c55e'
+                boxShadow: 'inset 0 3px 0 0 #16a34a'
               }}>
                 <div className="flex items-center gap-2">
-                  <div className="w-5 h-5 rounded-full" style={{ backgroundColor: '#22c55e' }}></div>
+                  <div className="flex items-center justify-center p-2 rounded-lg" style={{ backgroundColor: '#DCF4E1' }}>
+                    <Check className="w-4 h-4" style={{ color: '#16a34a' }} />
+                  </div>
                   <span className="text-sm font-medium text-gray-700">End</span>
                 </div>
               </div>
