@@ -1,4 +1,4 @@
-import { ArrowLeft, GitCompareArrows, Zap, FileText, BarChart3, Check, Bot, Cog, Users } from 'lucide-react';
+import { ArrowLeft, GitCompareArrows, Zap, FileText, BarChart3, Check, Bot, Cog, Users, Radio } from 'lucide-react';
 import ConnectionLine from './ConnectionLine';
 
 interface StageDetailMapProps {
@@ -23,8 +23,9 @@ const STAGE_DATA: { [key: string]: { activities: any[], agentic: number, automat
     activities: [
       { id: 1, label: 'Resume Analysis', type: 'automation', icon: Zap, description: 'AI-powered resume scoring' },
       { id: 2, label: 'Skills Assessment', type: 'activity', icon: FileText, description: 'Technical evaluation tests' },
-      { id: 3, label: 'Candidate Ranking', type: 'automation', icon: BarChart3, description: 'Generate ranking report' },
-      { id: 4, label: 'Feedback Review', type: 'activity', icon: FileText, description: 'Recruiter assessment' }
+      { id: 3, label: 'Screening Agent', type: 'agent', icon: Radio, description: 'Healthcare Questionnaire' },
+      { id: 4, label: 'Candidate Ranking', type: 'automation', icon: BarChart3, description: 'Generate ranking report' },
+      { id: 5, label: 'Feedback Review', type: 'activity', icon: FileText, description: 'Recruiter assessment' }
     ],
     agentic: 65,
     automatic: 20,
@@ -34,8 +35,9 @@ const STAGE_DATA: { [key: string]: { activities: any[], agentic: number, automat
     activities: [
       { id: 1, label: 'Interview Scheduling', type: 'automation', icon: Zap, description: 'Auto-schedule with candidates' },
       { id: 2, label: 'Interview Prep', type: 'activity', icon: FileText, description: 'Brief interviewers and send materials' },
-      { id: 3, label: 'Interview Feedback', type: 'automation', icon: BarChart3, description: 'Collect and summarize feedback' },
-      { id: 4, label: 'Decision Assessment', type: 'activity', icon: FileText, description: 'Final hiring team discussion' }
+      { id: 3, label: 'Interview Agent', type: 'agent', icon: Radio, description: 'Technical Assessment' },
+      { id: 4, label: 'Interview Feedback', type: 'automation', icon: BarChart3, description: 'Collect and summarize feedback' },
+      { id: 5, label: 'Decision Assessment', type: 'activity', icon: FileText, description: 'Final hiring team discussion' }
     ],
     agentic: 35,
     automatic: 30,
@@ -121,6 +123,40 @@ const StageDetailMap = ({ stageId, stageName, onBack }: StageDetailMapProps) => 
             <div className="flex flex-col gap-0" style={{ width: '280px' }}>
               {activities.map((activity, index) => {
                 const ActivityIcon = activity.icon;
+                const isAgent = activity.type === 'agent';
+
+                if (isAgent) {
+                  return (
+                    <div key={activity.id} className="flex flex-col gap-0">
+                      <div className="relative">
+                        <div className="absolute inset-0 rounded-xl" style={{
+                          backgroundImage: 'linear-gradient(135deg, #818CF8 0%, #E9D5FF 100%)',
+                          padding: '2px'
+                        }}>
+                          <div className="h-full rounded-xl" style={{
+                            backgroundColor: '#F3E8FF',
+                            border: '2px dashed #4C1D95'
+                          }} />
+                        </div>
+                        <button className="relative bg-gradient-to-br from-indigo-50 to-purple-50 rounded-xl shadow-xs hover:shadow-md transition-all w-full">
+                          <div className="flex items-center justify-between p-3">
+                            <div className="flex flex-col gap-1.5">
+                              <div className="flex items-center gap-3">
+                                <div className="flex items-center justify-center p-2 rounded-lg" style={{ backgroundColor: '#DDD6FE' }}>
+                                  <ActivityIcon className="w-4 h-4" style={{ color: '#4F46E5' }} />
+                                </div>
+                                <span className="text-sm font-medium text-gray-900">{activity.label}</span>
+                              </div>
+                              <span className="text-xs pb-1 pt-1.5" style={{ color: '#637085' }}>{activity.description}</span>
+                            </div>
+                          </div>
+                        </button>
+                      </div>
+                      {index < activities.length - 1 && <ConnectionLine />}
+                    </div>
+                  );
+                }
+
                 return (
                   <div key={activity.id} className="flex flex-col gap-0">
                     <button className="bg-white border border-gray-200 rounded-xl shadow-xs hover:border-indigo-700 transition-colors">
