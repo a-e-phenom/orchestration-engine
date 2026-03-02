@@ -2,6 +2,7 @@ import { useState } from 'react';
 import WorkflowNode from './WorkflowNode';
 import ConnectionLine from './ConnectionLine';
 import SidePanelSection from './SidePanelSection';
+import StageDetailMap from './StageDetailMap';
 import Workroom from './Workroom';
 import Operations from './Operations';
 import DataPage from './DataPage';
@@ -29,6 +30,7 @@ const Canvas = ({ activeTab }: CanvasProps) => {
   const [showPanel, setShowPanel] = useState(false);
   const [showRulePanel, setShowRulePanel] = useState(false);
   const [selectedNodeId, setSelectedNodeId] = useState<string | null>(null);
+  const [stageDetailView, setStageDetailView] = useState<string | null>(null);
 
   if (activeTab === 'workroom') {
     return <Workroom />;
@@ -40,6 +42,10 @@ const Canvas = ({ activeTab }: CanvasProps) => {
 
   if (activeTab === 'data') {
     return <DataPage />;
+  }
+
+  if (stageDetailView) {
+    return <StageDetailMap stageName={nodes.find(n => n.id === stageDetailView)?.label || ''} onBack={() => setStageDetailView(null)} />;
   }
 
   return (
@@ -149,6 +155,9 @@ const Canvas = ({ activeTab }: CanvasProps) => {
                       setSelectedNodeId(node.id);
                       setShowPanel(false);
                       setShowRulePanel(false);
+                    }}
+                    onChevronClick={() => {
+                      setStageDetailView(node.id);
                     }}
                     isSelected={selectedNodeId === node.id}
                   />

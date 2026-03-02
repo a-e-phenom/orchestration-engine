@@ -5,10 +5,11 @@ interface WorkflowNodeProps {
   step: number;
   hasEye?: boolean;
   onClick?: () => void;
+  onChevronClick?: () => void;
   isSelected?: boolean;
 }
 
-const WorkflowNode = ({ label, step, hasEye, onClick, isSelected }: WorkflowNodeProps) => {
+const WorkflowNode = ({ label, step, hasEye, onClick, onChevronClick, isSelected }: WorkflowNodeProps) => {
   return (
     <button
       onClick={onClick}
@@ -30,7 +31,12 @@ const WorkflowNode = ({ label, step, hasEye, onClick, isSelected }: WorkflowNode
               <Bot className="w-4 h-4 text-indigo-600" />
             </button>
           )}
-          <button className="p-1 hover:bg-gray-100 rounded transition-colors">
+          <button
+            onClick={(e) => {
+              e.stopPropagation();
+              onChevronClick?.();
+            }}
+            className="p-1 hover:bg-gray-100 rounded transition-colors">
             <ChevronRight className="w-5 h-5 text-gray-400" />
           </button>
         </div>
