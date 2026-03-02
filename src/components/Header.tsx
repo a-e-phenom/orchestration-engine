@@ -16,8 +16,8 @@ const Header = ({ activeTab, onTabChange }: HeaderProps) => {
   return (
     <header className="bg-white border-b border-gray-200 px-[24px] flex items-center justify-between">
       <div className="flex items-center gap-4">
-        <button className="w-6 h-6 flex items-center justify-center rounded-md hover:opacity-80 transition-opacity" style={{ borderColor: '#8C95A8', borderWidth: '1px' }}>
-          <ChevronLeft className="w-4 h-4 text-gray-700" />
+        <button className="w-6 h-6 flex items-center justify-center rounded-md hover:bg-gray-50 transition-colors" style={{ borderColor: '#8C95A8', borderWidth: '1px' }}>
+          <ChevronLeft className="w-4 h-4 text-gray-700 hover:text-gray-900" />
         </button>
         <h1 className="text-gray-800 font-medium">Hiring Motion - ICU Nurses</h1>
       </div>
@@ -59,15 +59,15 @@ const Header = ({ activeTab, onTabChange }: HeaderProps) => {
 
 
       <div className="flex items-center gap-2">
-        <button className="flex items-center gap-2 px-4 h-10 bg-white text-gray-700 rounded text-sm font-medium hover:opacity-80 transition-opacity" style={{ borderColor: '#8C95A8', borderWidth: '1px', borderRadius: '10px' }}>
+        <button className="flex items-center gap-2 px-4 h-10 bg-white text-gray-700 rounded text-sm font-medium hover:bg-gray-50 transition-colors group" style={{ borderColor: '#8C95A8', borderWidth: '1px', borderRadius: '10px' }}>
           <Circle className="w-2.5 h-2.5 fill-[#00875A]" />
-          Live
+          <span className="group-hover:text-gray-900 transition-colors">Live</span>
         </button>
         <button className="px-4 h-10 bg-gray-100 text-gray-400 rounded text-sm font-medium hover:bg-gray-200 transition-colors" style={{ borderRadius: '10px' }}>
           Save
         </button>
-        <button className="w-10 h-10 flex items-center justify-center hover:opacity-80 transition-opacity" style={{ borderColor: '#8C95A8', borderWidth: '1px', borderRadius: '10px' }}>
-          <MoreVertical className="w-5 h-5 text-gray-700" />
+        <button className="w-10 h-10 flex items-center justify-center hover:bg-gray-50 transition-colors group" style={{ borderColor: '#8C95A8', borderWidth: '1px', borderRadius: '10px' }}>
+          <MoreVertical className="w-5 h-5 text-gray-700 group-hover:text-gray-900 transition-colors" />
         </button>
       </div>
     </header>
