@@ -397,7 +397,7 @@ const Canvas = ({ activeTab }: CanvasProps) => {
                 setStageDetailView(selectedNodeId);
                 setSelectedNodeId(null);
               }}
-              className="w-full flex items-center justify-center gap-2 px-4 py-2 bg-white hover:bg-gray-50 border border-gray-200 text-gray-700 rounded-lg font-medium transition-colors">
+              className="w-full flex items-center justify-center gap-2 py-2 bg-white hover:bg-gray-50 border border-gray-200 text-gray-700 rounded-lg font-medium transition-colors">
               <ArrowRight className="w-4 h-4" />
               Open Subflow
             </button>
