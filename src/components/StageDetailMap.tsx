@@ -23,7 +23,8 @@ const STAGE_DATA: { [key: string]: { activities: any[], agentic: number, automat
     activities: [
       { id: 1, label: 'Screening Questions', type: 'activity', icon: FileText, description: 'Evaluate candidate responses' },
       { id: 2, label: 'Screening Agent', type: 'agent', icon: Bot, description: 'AI-powered evaluation' },
-      { id: 3, label: 'Message', type: 'activity', icon: MessageSquare, description: 'Send notification to candidate' }
+      { id: 3, label: 'Rejection Message', type: 'activity', icon: MessageSquare, description: 'Send rejection notification' },
+      { id: 4, label: 'Next Stage', type: 'activity', icon: MessageSquare, description: 'Advance to interview stage' }
     ],
     agentic: 65,
     automatic: 20,
@@ -60,8 +61,8 @@ const StageDetailMap = ({ stageId, stageName, onBack }: StageDetailMapProps) => 
 
   const branchConfigs: { [key: string]: { [nodeId: string]: string[] } } = {
     '2': {
-      'activity-1': ['activity-2', 'activity-3'],
-      'activity-2': ['activity-3', 'end']
+      'activity-1': ['activity-2'],
+      'activity-2': ['activity-3', 'activity-4']
     }
   };
 
