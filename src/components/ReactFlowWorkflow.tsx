@@ -168,6 +168,7 @@ const getLayoutedElements = (nodes: Node[], edges: Edge[]) => {
   // Find the depth of each node in the graph
   const calculateLevel = (nodeId: string, visited = new Set()): number => {
     if (visited.has(nodeId)) return 0;
+    if (nodeId === 'end') return -1;
     visited.add(nodeId);
 
     const incomingEdges = edges.filter(e => e.target === nodeId);
@@ -179,6 +180,10 @@ const getLayoutedElements = (nodes: Node[], edges: Edge[]) => {
   nodes.forEach(node => {
     levels[node.id] = calculateLevel(node.id);
   });
+
+  // Find max level (excluding end node)
+  const maxLevel = Math.max(...Object.entries(levels).filter(([id]) => id !== 'end').map(([, level]) => level));
+  levels['end'] = maxLevel + 1;
 
   // Group nodes by level
   const nodesByLevel: { [key: number]: string[] } = {};
