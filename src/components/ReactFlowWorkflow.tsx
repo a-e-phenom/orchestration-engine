@@ -27,6 +27,7 @@ interface ActivityNode {
 interface ReactFlowWorkflowProps {
   activities: ActivityNode[];
   stageId: string;
+  branchConfig?: { [nodeId: string]: string[] };
 }
 
 const CustomEdge = (props: EdgeProps) => {
@@ -142,7 +143,7 @@ const nodeTypes = {
   activity: ActivityNodeComponent,
 };
 
-const ReactFlowWorkflow = ({ activities, stageId }: ReactFlowWorkflowProps) => {
+const ReactFlowWorkflow = ({ activities, stageId, branchConfig }: ReactFlowWorkflowProps) => {
   const [nodes, setNodes, onNodesChange] = useNodesState([]);
   const [edges, setEdges, onEdgesChange] = useEdgesState([]);
 
@@ -165,9 +166,30 @@ const ReactFlowWorkflow = ({ activities, stageId }: ReactFlowWorkflowProps) => {
       type: 'activity',
     });
 
+    const activityMap: { [key: string]: number } = {};
+    let currentIndex = 0;
+
+    activities.forEach((activity) => {
+      activityMap[activity.id] = currentIndex;
+      currentIndex += 1;
+    });
+
     let yPosition = startY + 120;
+    const nodePositions: { [key: string]: { x: number; y: number } } = {};
+
     activities.forEach((activity, index) => {
       const nodeId = `activity-${activity.id}`;
+      let xPos = centerX;
+
+      if (branchConfig && branchConfig[nodeId]) {
+        const branchIndices = branchConfig[nodeId];
+        const branchCount = branchIndices.length;
+        const spacing = 200;
+        xPos = centerX - ((branchCount - 1) * spacing) / 2;
+      }
+
+      nodePositions[nodeId] = { x: xPos, y: yPosition };
+
       newNodes.push({
         id: nodeId,
         data: {
@@ -176,7 +198,7 @@ const ReactFlowWorkflow = ({ activities, stageId }: ReactFlowWorkflowProps) => {
           icon: activity.icon,
           description: activity.description,
         },
-        position: { x: centerX, y: yPosition },
+        position: { x: xPos, y: yPosition },
         type: 'activity',
       });
 
@@ -187,10 +209,11 @@ const ReactFlowWorkflow = ({ activities, stageId }: ReactFlowWorkflowProps) => {
           target: nodeId,
           type: 'custom',
         });
-      } else {
+      } else if (!branchConfig || !Object.values(branchConfig).some(branches => branches.includes(nodeId))) {
+        const prevActivity = activities[index - 1];
         newEdges.push({
-          id: `activity-${activities[index - 1].id}-to-${nodeId}`,
-          source: `activity-${activities[index - 1].id}`,
+          id: `activity-${prevActivity.id}-to-${nodeId}`,
+          source: `activity-${prevActivity.id}`,
           target: nodeId,
           type: 'custom',
         });
@@ -199,28 +222,72 @@ const ReactFlowWorkflow = ({ activities, stageId }: ReactFlowWorkflowProps) => {
       yPosition += 140;
     });
 
-    newNodes.push({
-      id: 'end',
-      data: {
-        label: 'End',
-        type: 'end',
-        icon: Check,
-        description: 'Workflow complete',
-      },
-      position: { x: centerX, y: yPosition },
-      type: 'activity',
-    });
+    if (branchConfig) {
+      Object.entries(branchConfig).forEach(([parentId, childIds]) => {
+        const childCount = childIds.length;
+        const spacing = 200;
+        const startX = centerX - ((childCount - 1) * spacing) / 2;
 
-    newEdges.push({
-      id: `activity-${activities[activities.length - 1].id}-to-end`,
-      source: `activity-${activities[activities.length - 1].id}`,
-      target: 'end',
-      type: 'custom',
-    });
+        childIds.forEach((childId, branchIndex) => {
+          const childNode = newNodes.find(n => n.id === childId);
+          if (childNode) {
+            childNode.position.x = startX + branchIndex * spacing;
+            nodePositions[childId] = { ...childNode.position };
+          }
+        });
+
+        childIds.forEach((childId) => {
+          newEdges.push({
+            id: `${parentId}-to-${childId}`,
+            source: parentId,
+            target: childId,
+            type: 'custom',
+          });
+        });
+      });
+    }
+
+    const lastActivityId = `activity-${activities[activities.length - 1].id}`;
+    const lastActivityNode = newNodes.find(n => n.id === lastActivityId);
+    if (lastActivityNode) {
+      const endY = lastActivityNode.position.y + 140;
+      const endX = centerX;
+
+      newNodes.push({
+        id: 'end',
+        data: {
+          label: 'End',
+          type: 'end',
+          icon: Check,
+          description: 'Workflow complete',
+        },
+        position: { x: endX, y: endY },
+        type: 'activity',
+      });
+
+      if (branchConfig && Object.keys(branchConfig).includes(lastActivityId)) {
+        const branchNodeIds = branchConfig[lastActivityId];
+        branchNodeIds.forEach((nodeId) => {
+          newEdges.push({
+            id: `${nodeId}-to-end`,
+            source: nodeId,
+            target: 'end',
+            type: 'custom',
+          });
+        });
+      } else {
+        newEdges.push({
+          id: `${lastActivityId}-to-end`,
+          source: lastActivityId,
+          target: 'end',
+          type: 'custom',
+        });
+      }
+    }
 
     setNodes(newNodes);
     setEdges(newEdges);
-  }, [activities, setNodes, setEdges]);
+  }, [activities, setNodes, setEdges, branchConfig]);
 
   const onConnect = useCallback(
     (connection: Connection) =>

@@ -1,4 +1,4 @@
-import { ArrowLeft, Zap, FileText, BarChart3, Check, Bot, Cog, Users, Radio } from 'lucide-react';
+import { ArrowLeft, Zap, FileText, BarChart3, Check, Bot, Cog, Users, Radio, MessageSquare } from 'lucide-react';
 import ReactFlowWorkflow from './ReactFlowWorkflow';
 
 interface StageDetailMapProps {
@@ -21,11 +21,9 @@ const STAGE_DATA: { [key: string]: { activities: any[], agentic: number, automat
   },
   '2': {
     activities: [
-      { id: 1, label: 'Resume Analysis', type: 'automation', icon: Zap, description: 'AI-powered resume scoring' },
-      { id: 2, label: 'Skills Assessment', type: 'activity', icon: FileText, description: 'Technical evaluation tests' },
-      { id: 3, label: 'Screening Agent', type: 'agent', icon: Radio, description: 'Healthcare Questionnaire' },
-      { id: 4, label: 'Candidate Ranking', type: 'automation', icon: BarChart3, description: 'Generate ranking report' },
-      { id: 5, label: 'Feedback Review', type: 'activity', icon: FileText, description: 'Recruiter assessment' }
+      { id: 1, label: 'Screening Questions', type: 'activity', icon: FileText, description: 'Evaluate candidate responses' },
+      { id: 2, label: 'Screening Agent', type: 'agent', icon: Bot, description: 'AI-powered evaluation' },
+      { id: 3, label: 'Message', type: 'activity', icon: MessageSquare, description: 'Send notification to candidate' }
     ],
     agentic: 65,
     automatic: 20,
@@ -59,6 +57,14 @@ const STAGE_DATA: { [key: string]: { activities: any[], agentic: number, automat
 const StageDetailMap = ({ stageId, stageName, onBack }: StageDetailMapProps) => {
   const stageConfig = STAGE_DATA[stageId] || STAGE_DATA['2'];
   const activities = stageConfig.activities;
+
+  const branchConfigs: { [key: string]: { [nodeId: string]: string[] } } = {
+    '2': {
+      'activity-1': ['activity-2', 'activity-3']
+    }
+  };
+
+  const branchConfig = branchConfigs[stageId];
 
   return (
     <div className="flex-1 overflow-auto relative flex flex-col">
@@ -102,6 +108,7 @@ const StageDetailMap = ({ stageId, stageName, onBack }: StageDetailMapProps) => 
         <ReactFlowWorkflow
           activities={activities}
           stageId={stageId}
+          branchConfig={branchConfig}
         />
       </div>
     </div>
