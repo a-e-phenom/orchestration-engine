@@ -15,6 +15,7 @@ import ReactFlow, {
 } from 'reactflow';
 import 'reactflow/dist/style.css';
 import { Zap, FileText, BarChart3, Check, Bot, Radio, Plus } from 'lucide-react';
+import dagre from 'dagre';
 
 interface ActivityNode {
   id: string;
@@ -36,20 +37,49 @@ const CustomEdge = (props: EdgeProps) => {
 
   const midX = (sourceX + targetX) / 2;
   const midY = (sourceY + targetY) / 2;
+  const dx = targetX - sourceX;
+  const dy = targetY - sourceY;
+  const distance = Math.sqrt(dx * dx + dy * dy);
+  const ratio = distance > 0 ? 30 / distance : 0;
+  const startX = sourceX + dx * ratio;
+  const startY = sourceY + dy * ratio;
+  const endX = targetX - dx * ratio;
+  const endY = targetY - dy * ratio;
 
   return (
     <g>
       <path
-        d={`M ${sourceX} ${sourceY} L ${sourceX} ${midY} L ${targetX} ${midY} L ${targetX} ${targetY}`}
+        d={`M ${startX} ${startY} L ${startX} ${midY} L ${endX} ${midY} L ${endX} ${endY}`}
         fill="none"
-        stroke="#AEB5C2"
+        stroke="#D1D5DB"
         strokeWidth={2}
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+      <defs>
+        <marker
+          id="arrowhead"
+          markerWidth="10"
+          markerHeight="10"
+          refX="9"
+          refY="3"
+          orient="auto"
+        >
+          <polygon points="0 0, 10 3, 0 6" fill="#D1D5DB" />
+        </marker>
+      </defs>
+      <path
+        d={`M ${endX} ${endY} L ${endX + (dx > 0 ? 15 : -15)} ${endY}`}
+        fill="none"
+        stroke="#D1D5DB"
+        strokeWidth={2}
+        markerEnd="url(#arrowhead)"
       />
       <circle
         cx={midX}
         cy={midY}
-        r={isHovering ? 12 : 6}
-        fill={isHovering ? '#8C95A8' : '#d1d5db'}
+        r={isHovering ? 14 : 8}
+        fill={isHovering ? '#6B7280' : '#E5E7EB'}
         onMouseEnter={() => setIsHovering(true)}
         onMouseLeave={() => setIsHovering(false)}
         style={{ cursor: 'pointer', transition: 'all 0.2s' }}
@@ -98,16 +128,16 @@ const ActivityNodeComponent = ({ data }: { data: any }) => {
   if (isStart || isEnd) {
     return (
       <div
-        className="bg-white rounded-xl px-3 pb-2 pt-2.5 w-full flex items-center justify-center"
+        className="bg-white rounded-xl px-4 py-3 w-full flex items-center justify-center shadow-sm hover:shadow-md transition-shadow"
         style={{
-          border: '1px solid ' + borderColor,
+          border: '1.5px solid ' + borderColor,
           boxShadow: boxShadowStyle
         }}
       >
         <Handle type="target" position={Position.Top} style={{ visibility: 'hidden' }} />
-        <div className="flex items-center gap-2">
-          <Icon className="w-5 h-5" style={{ color: accentColor }} />
-          <span className="text-sm font-medium text-gray-700">{data.label}</span>
+        <div className="flex items-center gap-2.5">
+          <Icon className="w-5 h-5 flex-shrink-0" style={{ color: accentColor }} />
+          <span className="text-sm font-semibold text-gray-900">{data.label}</span>
         </div>
         <Handle type="source" position={Position.Bottom} style={{ visibility: 'hidden' }} />
       </div>
@@ -116,22 +146,22 @@ const ActivityNodeComponent = ({ data }: { data: any }) => {
 
   return (
     <div
-      className={`${bgColor} rounded-xl p-3 min-w-[240px] ${isAgent ? 'bg-indigo-50' : ''}`}
+      className={`${bgColor} rounded-xl p-4 min-w-[280px] ${isAgent ? 'border-2 border-indigo-300 bg-indigo-50' : ''} shadow-sm hover:shadow-md transition-shadow`}
       style={{
-        border: '1px solid ' + borderColor
+        border: isAgent ? undefined : '1px solid ' + borderColor
       }}
     >
       <Handle type="target" position={Position.Top} style={{ visibility: 'hidden' }} />
       <div className="flex items-start gap-3">
         <div
-          className="flex items-center justify-center p-2 rounded-lg flex-shrink-0"
+          className="flex items-center justify-center p-2.5 rounded-lg flex-shrink-0"
           style={{ backgroundColor: bgAccent }}
         >
-          <Icon className="w-4 h-4" style={{ color: accentColor }} />
+          <Icon className="w-5 h-5" style={{ color: accentColor }} />
         </div>
         <div className="flex-1 min-w-0">
-          <p className="text-sm font-medium text-gray-900">{data.label}</p>
-          <p className="text-xs text-gray-600 mt-1">{data.description}</p>
+          <p className="text-sm font-semibold text-gray-900">{data.label}</p>
+          <p className="text-xs text-gray-500 mt-1.5 leading-relaxed">{data.description}</p>
         </div>
       </div>
       <Handle type="source" position={Position.Bottom} style={{ visibility: 'hidden' }} />
@@ -143,6 +173,36 @@ const nodeTypes = {
   activity: ActivityNodeComponent,
 };
 
+const getLayoutedElements = (nodes: Node[], edges: Edge[], direction = 'TB') => {
+  const dagreGraph = new dagre.graphlib.Graph();
+  dagreGraph.setDefaultEdgeLabel(() => ({}));
+  dagreGraph.setGraph({ rankdir: direction, nodesep: 120, ranksep: 160 });
+
+  nodes.forEach((node) => {
+    dagreGraph.setNode(node.id, { width: 280, height: 100 });
+  });
+
+  edges.forEach((edge) => {
+    dagreGraph.setEdge(edge.source, edge.target);
+  });
+
+  dagre.layout(dagreGraph);
+
+  return {
+    nodes: nodes.map((node) => {
+      const nodeWithPosition = dagreGraph.node(node.id);
+      return {
+        ...node,
+        position: {
+          x: nodeWithPosition.x - 140,
+          y: nodeWithPosition.y - 50,
+        },
+      };
+    }),
+    edges,
+  };
+};
+
 const ReactFlowWorkflow = ({ activities, stageId, branchConfig }: ReactFlowWorkflowProps) => {
   const [nodes, setNodes, onNodesChange] = useNodesState([]);
   const [edges, setEdges, onEdgesChange] = useEdgesState([]);
@@ -150,9 +210,6 @@ const ReactFlowWorkflow = ({ activities, stageId, branchConfig }: ReactFlowWorkf
   useEffect(() => {
     const newNodes: Node[] = [];
     const newEdges: Edge[] = [];
-    const centerX = 0;
-    const totalHeight = 120 + (activities.length * 140);
-    const startY = -totalHeight / 2;
 
     newNodes.push({
       id: 'start',
@@ -162,34 +219,12 @@ const ReactFlowWorkflow = ({ activities, stageId, branchConfig }: ReactFlowWorkf
         icon: Radio,
         description: 'Evaluates incoming cases',
       },
-      position: { x: centerX, y: startY },
+      position: { x: 0, y: 0 },
       type: 'activity',
     });
 
-    const activityMap: { [key: string]: number } = {};
-    let currentIndex = 0;
-
-    activities.forEach((activity) => {
-      activityMap[activity.id] = currentIndex;
-      currentIndex += 1;
-    });
-
-    let yPosition = startY + 120;
-    const nodePositions: { [key: string]: { x: number; y: number } } = {};
-
     activities.forEach((activity, index) => {
       const nodeId = `activity-${activity.id}`;
-      let xPos = centerX;
-
-      if (branchConfig && branchConfig[nodeId]) {
-        const branchIndices = branchConfig[nodeId];
-        const branchCount = branchIndices.length;
-        const spacing = 200;
-        xPos = centerX - ((branchCount - 1) * spacing) / 2;
-      }
-
-      nodePositions[nodeId] = { x: xPos, y: yPosition };
-
       newNodes.push({
         id: nodeId,
         data: {
@@ -198,7 +233,7 @@ const ReactFlowWorkflow = ({ activities, stageId, branchConfig }: ReactFlowWorkf
           icon: activity.icon,
           description: activity.description,
         },
-        position: { x: xPos, y: yPosition },
+        position: { x: 0, y: 0 },
         type: 'activity',
       });
 
@@ -218,24 +253,10 @@ const ReactFlowWorkflow = ({ activities, stageId, branchConfig }: ReactFlowWorkf
           type: 'custom',
         });
       }
-
-      yPosition += 140;
     });
 
     if (branchConfig) {
       Object.entries(branchConfig).forEach(([parentId, childIds]) => {
-        const childCount = childIds.length;
-        const spacing = 200;
-        const startX = centerX - ((childCount - 1) * spacing) / 2;
-
-        childIds.forEach((childId, branchIndex) => {
-          const childNode = newNodes.find(n => n.id === childId);
-          if (childNode) {
-            childNode.position.x = startX + branchIndex * spacing;
-            nodePositions[childId] = { ...childNode.position };
-          }
-        });
-
         childIds.forEach((childId) => {
           newEdges.push({
             id: `${parentId}-to-${childId}`,
@@ -248,45 +269,41 @@ const ReactFlowWorkflow = ({ activities, stageId, branchConfig }: ReactFlowWorkf
     }
 
     const lastActivityId = `activity-${activities[activities.length - 1].id}`;
-    const lastActivityNode = newNodes.find(n => n.id === lastActivityId);
-    if (lastActivityNode) {
-      const endY = lastActivityNode.position.y + 140;
-      const endX = centerX;
 
-      newNodes.push({
-        id: 'end',
-        data: {
-          label: 'End',
-          type: 'end',
-          icon: Check,
-          description: 'Workflow complete',
-        },
-        position: { x: endX, y: endY },
-        type: 'activity',
-      });
+    newNodes.push({
+      id: 'end',
+      data: {
+        label: 'End',
+        type: 'end',
+        icon: Check,
+        description: 'Workflow complete',
+      },
+      position: { x: 0, y: 0 },
+      type: 'activity',
+    });
 
-      if (branchConfig && Object.keys(branchConfig).includes(lastActivityId)) {
-        const branchNodeIds = branchConfig[lastActivityId];
-        branchNodeIds.forEach((nodeId) => {
-          newEdges.push({
-            id: `${nodeId}-to-end`,
-            source: nodeId,
-            target: 'end',
-            type: 'custom',
-          });
-        });
-      } else {
+    if (branchConfig && Object.keys(branchConfig).includes(lastActivityId)) {
+      const branchNodeIds = branchConfig[lastActivityId];
+      branchNodeIds.forEach((nodeId) => {
         newEdges.push({
-          id: `${lastActivityId}-to-end`,
-          source: lastActivityId,
+          id: `${nodeId}-to-end`,
+          source: nodeId,
           target: 'end',
           type: 'custom',
         });
-      }
+      });
+    } else {
+      newEdges.push({
+        id: `${lastActivityId}-to-end`,
+        source: lastActivityId,
+        target: 'end',
+        type: 'custom',
+      });
     }
 
-    setNodes(newNodes);
-    setEdges(newEdges);
+    const layouted = getLayoutedElements(newNodes, newEdges);
+    setNodes(layouted.nodes);
+    setEdges(layouted.edges);
   }, [activities, setNodes, setEdges, branchConfig]);
 
   const onConnect = useCallback(
