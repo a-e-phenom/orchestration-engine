@@ -70,31 +70,37 @@ const ActivityNodeComponent = ({ data }: { data: any }) => {
   const isEnd = data.type === 'end';
 
   let bgColor = 'bg-white';
-  let borderColor = 'border-gray-200';
+  let borderColor = '#E8EAEE';
   let accentColor = '#5E48B8';
   let bgAccent = '#EAE8FB';
+  let boxShadowStyle = 'inset 0 3px 0 0 #D2CEF7';
 
   if (isStart) {
     bgColor = 'bg-white';
-    borderColor = 'border-orange-300';
+    borderColor = '#E8EAEE';
     accentColor = '#BA4800';
     bgAccent = '#FED7AA';
+    boxShadowStyle = 'inset 0 3px 0 0 #FDBA74';
   } else if (isEnd) {
     bgColor = 'bg-white';
-    borderColor = 'border-green-300';
+    borderColor = '#E8EAEE';
     accentColor = '#16a34a';
     bgAccent = '#DCFCE7';
+    boxShadowStyle = 'inset 0 3px 0 0 #BBF7D0';
   } else if (isAgent) {
     bgColor = 'bg-white';
-    borderColor = 'border-indigo-400';
+    borderColor = '#818CF8';
   }
 
   const Icon = data.icon;
 
   return (
     <div
-      className={`${bgColor} ${borderColor} border-2 rounded-xl p-3 shadow-md min-w-[240px] ${isAgent ? 'bg-indigo-50' : ''}`}
-      style={{ borderColor: isAgent ? '#818CF8' : 'inherit' }}
+      className={`${bgColor} rounded-xl p-3 shadow-md min-w-[240px] ${isAgent ? 'bg-indigo-50' : ''}`}
+      style={{
+        border: '1px solid ' + borderColor,
+        boxShadow: (isStart || isEnd) ? boxShadowStyle : undefined
+      }}
     >
       <Handle type="target" position={Position.Top} />
       <div className="flex items-start gap-3">
