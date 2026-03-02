@@ -38,25 +38,11 @@ const CustomEdge = (props: EdgeProps) => {
 
   return (
     <g>
-      <defs>
-        <marker
-          id="custom-arrow"
-          markerWidth="10"
-          markerHeight="10"
-          refX="9"
-          refY="3"
-          orient="auto"
-          markerUnits="strokeWidth"
-        >
-          <path d="M0,0 L0,6 L9,3 z" fill="#AEB5C2" />
-        </marker>
-      </defs>
       <path
         d={`M ${sourceX} ${sourceY} L ${sourceX} ${midY} L ${targetX} ${midY} L ${targetX} ${targetY}`}
         fill="none"
         stroke="#AEB5C2"
         strokeWidth={2}
-        markerEnd="url(#custom-arrow)"
       />
       <circle
         cx={midX}
