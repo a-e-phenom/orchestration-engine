@@ -97,7 +97,7 @@ const ActivityNodeComponent = ({ data }: { data: any }) => {
   if (isStart || isEnd) {
     return (
       <div
-        className="bg-white rounded-xl px-3 pb-2 pt-2.5 shadow-sm min-w-[240px]"
+        className="bg-white rounded-xl px-3 pb-2 pt-2.5 w-full"
         style={{
           border: '1px solid ' + borderColor,
           boxShadow: boxShadowStyle
@@ -115,7 +115,7 @@ const ActivityNodeComponent = ({ data }: { data: any }) => {
 
   return (
     <div
-      className={`${bgColor} rounded-xl p-3 shadow-md min-w-[240px] ${isAgent ? 'bg-indigo-50' : ''}`}
+      className={`${bgColor} rounded-xl p-3 min-w-[240px] ${isAgent ? 'bg-indigo-50' : ''}`}
       style={{
         border: '1px solid ' + borderColor
       }}
