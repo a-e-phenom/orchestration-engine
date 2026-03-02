@@ -31,13 +31,11 @@ interface ReactFlowWorkflowProps {
 }
 
 const CustomEdge = (props: EdgeProps) => {
-  const { sourceX, sourceY, targetX, targetY } = props;
+  const { sourceX, sourceY, targetX, targetY, data } = props;
   const [isHovering, setIsHovering] = useState(false);
 
   const midX = (sourceX + targetX) / 2;
   const midY = (sourceY + targetY) / 2;
-  const dx = targetX - sourceX;
-  const dy = targetY - sourceY;
 
   return (
     <g>
@@ -64,6 +62,15 @@ const CustomEdge = (props: EdgeProps) => {
         <foreignObject x={midX - 8} y={midY - 8} width={16} height={16}>
           <div className="flex items-center justify-center w-full h-full">
             <Plus className="w-4 h-4 text-white" strokeWidth={3} />
+          </div>
+        </foreignObject>
+      )}
+      {data?.label && (
+        <foreignObject x={midX - 30} y={midY - 25} width={60} height={20}>
+          <div className="flex items-center justify-center w-full h-full">
+            <span className="text-xs font-medium px-2 py-1 bg-white border border-gray-200 rounded-full text-gray-700 whitespace-nowrap">
+              {data.label}
+            </span>
           </div>
         </foreignObject>
       )}
@@ -255,12 +262,14 @@ const ReactFlowWorkflow = ({ activities, stageId, branchConfig }: ReactFlowWorkf
 
     if (branchConfig) {
       Object.entries(branchConfig).forEach(([parentId, childIds]) => {
-        childIds.forEach((childId) => {
+        childIds.forEach((childId, index) => {
+          const label = childIds.length > 1 ? (index === 0 ? 'No' : 'Yes') : undefined;
           newEdges.push({
             id: `${parentId}-to-${childId}`,
             source: parentId,
             target: childId,
             type: 'custom',
+            data: { label }
           });
         });
       });
