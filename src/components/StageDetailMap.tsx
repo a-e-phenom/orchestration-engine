@@ -74,7 +74,7 @@ const StageDetailMap = ({ stageName, onBack }: StageDetailMapProps) => {
 
             {/* End Card */}
             <div className="flex flex-col items-center gap-0">
-              <ConnectionLine isShort />
+              <ConnectionLine />
               <div className="bg-white rounded-xl px-3 pb-2 pt-2.5 shadow-sm w-full text-left border border-[#E8EAEE]" style={{
                 boxShadow: 'inset 0 3px 0 0 #16a34a'
               }}>
