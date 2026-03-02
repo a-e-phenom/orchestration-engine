@@ -128,14 +128,14 @@ const StageDetailMap = ({ stageId, stageName, onBack }: StageDetailMapProps) => 
                 if (isAgent) {
                   return (
                     <div key={activity.id} className="flex flex-col gap-0">
-                      <div className="relative p-px" style={{
+                      <div className="relative" style={{
+                        padding: '3px',
                         backgroundImage: 'linear-gradient(135deg, #818CF8 0%, #E9D5FF 100%)',
                         borderRadius: '12px'
                       }}>
-                        <button className="relative bg-white rounded-[11px] shadow-xs hover:shadow-md transition-all w-full">
-                          <div className="relative p-3">
-                            <div className="absolute inset-3 rounded-lg border-2 border-dashed" style={{ borderColor: '#4C1D95' }} />
-                            <div className="relative flex items-center justify-between">
+                        <div className="relative bg-white rounded-[9px] border-2 border-dashed" style={{ borderColor: '#4C1D95' }}>
+                          <button className="relative bg-white rounded-[9px] shadow-xs hover:shadow-md transition-all w-full">
+                            <div className="flex items-center justify-between p-3">
                               <div className="flex flex-col gap-1.5">
                                 <div className="flex items-center gap-3">
                                   <div className="flex items-center justify-center p-2 rounded-lg" style={{ backgroundColor: '#EAE8FB' }}>
@@ -146,8 +146,8 @@ const StageDetailMap = ({ stageId, stageName, onBack }: StageDetailMapProps) => 
                                 <span className="text-xs pb-1 pt-1.5" style={{ color: '#637085' }}>{activity.description}</span>
                               </div>
                             </div>
-                          </div>
-                        </button>
+                          </button>
+                        </div>
                       </div>
                       {index < activities.length - 1 && <ConnectionLine />}
                     </div>
