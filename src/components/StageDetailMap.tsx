@@ -128,12 +128,12 @@ const StageDetailMap = ({ stageId, stageName, onBack }: StageDetailMapProps) => 
                 if (isAgent) {
                   return (
                     <div key={activity.id} className="flex flex-col gap-0">
-                      <div className="relative" style={{
-                        padding: '3px',
-                        backgroundImage: 'linear-gradient(135deg, #818CF8 0%, #E9D5FF 100%)',
-                        borderRadius: '12px'
-                      }}>
-                        <div className="relative bg-white rounded-[9px] border-2 border-dashed" style={{ borderColor: '#4C1D95' }}>
+                      <div className="relative border-2 border-dashed rounded-[12px]" style={{ borderColor: '#4C1D95' }}>
+                        <div className="relative" style={{
+                          padding: '3px',
+                          backgroundImage: 'linear-gradient(135deg, #818CF8 0%, #E9D5FF 100%)',
+                          borderRadius: '12px'
+                        }}>
                           <button className="relative bg-white rounded-[9px] shadow-xs hover:shadow-md transition-all w-full">
                             <div className="flex items-center justify-between p-3">
                               <div className="flex flex-col gap-1.5">
