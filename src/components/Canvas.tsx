@@ -6,7 +6,7 @@ import StageDetailMap from './StageDetailMap';
 import Workroom from './Workroom';
 import Operations from './Operations';
 import DataPage from './DataPage';
-import { Plus, Layers, Zap, AlertCircle, FileText, Bot, GitBranch, GitCompareArrows, X, HelpCircle, MoreVertical, Shield, File, Calendar, MessageSquare, Zap as ZapIcon } from 'lucide-react';
+import { Plus, Layers, Zap, AlertCircle, FileText, Bot, GitBranch, GitCompareArrows, X, HelpCircle, MoreVertical, Shield, File, Calendar, MessageSquare, Zap as ZapIcon, ArrowRight } from 'lucide-react';
 
 interface Node {
   id: string;
@@ -18,6 +18,55 @@ interface Node {
 interface CanvasProps {
   activeTab: string;
 }
+
+const STAGE_DATA: { [key: string]: { activities: any[], agentic: number, automatic: number, human: number } } = {
+  '1': {
+    activities: [
+      { id: 1, label: 'Application Intake', type: 'automation', icon: Zap, description: 'Auto-parse and validate submissions' },
+      { id: 2, label: 'Initial Screening', type: 'activity', icon: FileText, description: 'Check basic qualifications' },
+      { id: 3, label: 'Data Enrichment', type: 'automation', icon: Zap, description: 'Add candidate background info' },
+      { id: 4, label: 'Verification', type: 'activity', icon: FileText, description: 'Manual credential check' }
+    ],
+    agentic: 45,
+    automatic: 25,
+    human: 30
+  },
+  '2': {
+    activities: [
+      { id: 1, label: 'Resume Analysis', type: 'automation', icon: Zap, description: 'AI-powered resume scoring' },
+      { id: 2, label: 'Skills Assessment', type: 'activity', icon: FileText, description: 'Technical evaluation tests' },
+      { id: 3, label: 'Screening Agent', type: 'agent', icon: Bot, description: 'Healthcare Questionnaire' },
+      { id: 4, label: 'Candidate Ranking', type: 'automation', icon: Zap, description: 'Generate ranking report' },
+      { id: 5, label: 'Feedback Review', type: 'activity', icon: FileText, description: 'Recruiter assessment' }
+    ],
+    agentic: 65,
+    automatic: 20,
+    human: 15
+  },
+  '3': {
+    activities: [
+      { id: 1, label: 'Interview Scheduling', type: 'automation', icon: Zap, description: 'Auto-schedule with candidates' },
+      { id: 2, label: 'Interview Prep', type: 'activity', icon: FileText, description: 'Brief interviewers and send materials' },
+      { id: 3, label: 'Interview Agent', type: 'agent', icon: Bot, description: 'Technical Assessment' },
+      { id: 4, label: 'Interview Feedback', type: 'automation', icon: Zap, description: 'Collect and summarize feedback' },
+      { id: 5, label: 'Decision Assessment', type: 'activity', icon: FileText, description: 'Final hiring team discussion' }
+    ],
+    agentic: 35,
+    automatic: 30,
+    human: 35
+  },
+  '4': {
+    activities: [
+      { id: 1, label: 'Offer Generation', type: 'automation', icon: Zap, description: 'Auto-create offer terms' },
+      { id: 2, label: 'Approval Flow', type: 'activity', icon: FileText, description: 'Executive sign-off' },
+      { id: 3, label: 'Offer Delivery', type: 'automation', icon: Zap, description: 'Send offer to candidate' },
+      { id: 4, label: 'Negotiations', type: 'activity', icon: FileText, description: 'Handle counter-offers' }
+    ],
+    agentic: 50,
+    automatic: 35,
+    human: 15
+  }
+};
 
 const Canvas = ({ activeTab }: CanvasProps) => {
   const [nodes] = useState<Node[]>([
@@ -332,8 +381,8 @@ const Canvas = ({ activeTab }: CanvasProps) => {
       {/* Workflow Node Side Panel */}
       {selectedNodeId && (
         <div className="fixed right-0 top-[65px] h-[calc(100%-64px)] w-[502px] bg-white border-l border-gray-200 shadow-lg z-50 overflow-y-auto">
-          <div className="sticky top-0 bg-white px-6 py-4 flex items-start justify-between">
-            <div className="flex items-start gap-3">
+          <div className="sticky top-0 bg-white px-6 py-4 flex items-start justify-between border-b border-gray-200">
+            <div className="flex items-start gap-3 flex-1">
               <div>
                 <h3 className="text-lg font-semibold text-gray-900 mb-1 mt-4">{nodes.find(n => n.id === selectedNodeId)?.label} Subflow</h3>
                 <p className="text-xs text-gray-500">
@@ -348,6 +397,18 @@ const Canvas = ({ activeTab }: CanvasProps) => {
               onClick={() => setSelectedNodeId(null)}
               className="p-1 hover:bg-gray-100 rounded transition-colors flex-shrink-0">
               <X className="w-5 h-5 text-gray-400" />
+            </button>
+          </div>
+
+          <div className="px-6 py-4 border-b border-gray-200">
+            <button
+              onClick={() => {
+                setStageDetailView(selectedNodeId);
+                setSelectedNodeId(null);
+              }}
+              className="w-full flex items-center justify-center gap-2 px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg font-medium transition-colors">
+              <ArrowRight className="w-4 h-4" />
+              Open Subflow
             </button>
           </div>
 
@@ -413,21 +474,26 @@ const Canvas = ({ activeTab }: CanvasProps) => {
                 <div className="mb-4">
                   <SidePanelSection title="Activities" />
                 </div>
+                <div className="flex items-center justify-between mb-4">
+                  <p className="text-sm font-medium text-gray-900">{STAGE_DATA[selectedNodeId || '1'].activities.length} Activities</p>
+                </div>
                 <div className="space-y-3">
-                  {[
-                    { icon: Calendar, label: 'Interview Scheduling (2)' },
-                    { icon: MessageSquare, label: 'Message (2)' },
-                    { icon: ZapIcon, label: 'Scheduling Agent' }
-                  ].map((activity, idx) => (
-                    <button
-                      key={idx}
-                      className="w-full flex items-center gap-3 p-3 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors text-left">
-                      <div className="bg-indigo-50 rounded p-2">
-                        <activity.icon className="w-3.5 h-3.5" style={{ color: '#4D3EE0' }} />
-                      </div>
-                      <span className="text-sm font-medium text-gray-900">{activity.label}</span>
-                    </button>
-                  ))}
+                  {STAGE_DATA[selectedNodeId || '1'].activities.map((activity) => {
+                    const ActivityIcon = activity.icon;
+                    return (
+                      <button
+                        key={activity.id}
+                        className="w-full flex items-center gap-3 p-3 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors text-left">
+                        <div className="bg-indigo-50 rounded p-2 flex-shrink-0">
+                          <ActivityIcon className="w-3.5 h-3.5" style={{ color: '#4D3EE0' }} />
+                        </div>
+                        <div className="flex-1 min-w-0">
+                          <p className="text-sm font-medium text-gray-900">{activity.label}</p>
+                          <p className="text-xs text-gray-500 truncate">{activity.description}</p>
+                        </div>
+                      </button>
+                    );
+                  })}
                 </div>
               </div>
             </div>
