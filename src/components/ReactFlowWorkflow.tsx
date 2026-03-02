@@ -103,12 +103,12 @@ const ActivityNodeComponent = ({ data }: { data: any }) => {
           boxShadow: boxShadowStyle
         }}
       >
-        <Handle type="target" position={Position.Top} />
+        <Handle type="target" position={Position.Top} style={{ visibility: 'hidden' }} />
         <div className="flex items-center gap-2">
           <Icon className="w-5 h-5" style={{ color: accentColor }} />
           <span className="text-sm font-medium text-gray-700">{data.label}</span>
         </div>
-        <Handle type="source" position={Position.Bottom} />
+        <Handle type="source" position={Position.Bottom} style={{ visibility: 'hidden' }} />
       </div>
     );
   }
@@ -120,7 +120,7 @@ const ActivityNodeComponent = ({ data }: { data: any }) => {
         border: '1px solid ' + borderColor
       }}
     >
-      <Handle type="target" position={Position.Top} />
+      <Handle type="target" position={Position.Top} style={{ visibility: 'hidden' }} />
       <div className="flex items-start gap-3">
         <div
           className="flex items-center justify-center p-2 rounded-lg flex-shrink-0"
@@ -133,7 +133,7 @@ const ActivityNodeComponent = ({ data }: { data: any }) => {
           <p className="text-xs text-gray-600 mt-1">{data.description}</p>
         </div>
       </div>
-      <Handle type="source" position={Position.Bottom} />
+      <Handle type="source" position={Position.Bottom} style={{ visibility: 'hidden' }} />
     </div>
   );
 };
@@ -149,7 +149,9 @@ const ReactFlowWorkflow = ({ activities, stageId }: ReactFlowWorkflowProps) => {
   useEffect(() => {
     const newNodes: Node[] = [];
     const newEdges: Edge[] = [];
-    const centerX = -60;
+    const centerX = 0;
+    const totalHeight = 120 + (activities.length * 140);
+    const startY = -totalHeight / 2;
 
     newNodes.push({
       id: 'start',
@@ -159,11 +161,11 @@ const ReactFlowWorkflow = ({ activities, stageId }: ReactFlowWorkflowProps) => {
         icon: Radio,
         description: 'Evaluates incoming cases',
       },
-      position: { x: centerX, y: 0 },
+      position: { x: centerX, y: startY },
       type: 'activity',
     });
 
-    let yPosition = 120;
+    let yPosition = startY + 120;
     activities.forEach((activity, index) => {
       const nodeId = `activity-${activity.id}`;
       newNodes.push({
@@ -174,7 +176,7 @@ const ReactFlowWorkflow = ({ activities, stageId }: ReactFlowWorkflowProps) => {
           icon: activity.icon,
           description: activity.description,
         },
-        position: { x: 0, y: yPosition },
+        position: { x: centerX, y: yPosition },
         type: 'activity',
       });
 
