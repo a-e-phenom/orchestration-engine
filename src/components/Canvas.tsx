@@ -45,7 +45,7 @@ const Canvas = ({ activeTab }: CanvasProps) => {
   }
 
   if (stageDetailView) {
-    return <StageDetailMap stageName={nodes.find(n => n.id === stageDetailView)?.label || ''} onBack={() => setStageDetailView(null)} />;
+    return <StageDetailMap stageId={stageDetailView} stageName={nodes.find(n => n.id === stageDetailView)?.label || ''} onBack={() => setStageDetailView(null)} />;
   }
 
   return (

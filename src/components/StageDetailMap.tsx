@@ -2,17 +2,61 @@ import { ArrowLeft, GitCompareArrows, Zap, FileText, BarChart3, Check, Bot, Cog,
 import ConnectionLine from './ConnectionLine';
 
 interface StageDetailMapProps {
+  stageId: string;
   stageName: string;
   onBack: () => void;
 }
 
-const StageDetailMap = ({ stageName, onBack }: StageDetailMapProps) => {
-  const activities = [
-    { id: 1, label: 'Candidate Evaluation', type: 'automation', icon: Zap, description: 'Automated skill scoring and ranking' },
-    { id: 2, label: 'Document Review', type: 'activity', icon: FileText, description: 'Resume and portfolio analysis' },
-    { id: 3, label: 'Interview Setup', type: 'automation', icon: BarChart3, description: 'Schedule and prepare interview slots' },
-    { id: 4, label: 'Feedback Collection', type: 'activity', icon: FileText, description: 'Gather interviewer assessments' }
-  ];
+const STAGE_DATA: { [key: string]: { activities: any[], agentic: number, automatic: number, human: number } } = {
+  '1': {
+    activities: [
+      { id: 1, label: 'Application Intake', type: 'automation', icon: Zap, description: 'Auto-parse and validate submissions' },
+      { id: 2, label: 'Initial Screening', type: 'activity', icon: FileText, description: 'Check basic qualifications' },
+      { id: 3, label: 'Data Enrichment', type: 'automation', icon: BarChart3, description: 'Add candidate background info' },
+      { id: 4, label: 'Verification', type: 'activity', icon: FileText, description: 'Manual credential check' }
+    ],
+    agentic: 45,
+    automatic: 25,
+    human: 30
+  },
+  '2': {
+    activities: [
+      { id: 1, label: 'Resume Analysis', type: 'automation', icon: Zap, description: 'AI-powered resume scoring' },
+      { id: 2, label: 'Skills Assessment', type: 'activity', icon: FileText, description: 'Technical evaluation tests' },
+      { id: 3, label: 'Candidate Ranking', type: 'automation', icon: BarChart3, description: 'Generate ranking report' },
+      { id: 4, label: 'Feedback Review', type: 'activity', icon: FileText, description: 'Recruiter assessment' }
+    ],
+    agentic: 65,
+    automatic: 20,
+    human: 15
+  },
+  '3': {
+    activities: [
+      { id: 1, label: 'Interview Scheduling', type: 'automation', icon: Zap, description: 'Auto-schedule with candidates' },
+      { id: 2, label: 'Interview Prep', type: 'activity', icon: FileText, description: 'Brief interviewers and send materials' },
+      { id: 3, label: 'Interview Feedback', type: 'automation', icon: BarChart3, description: 'Collect and summarize feedback' },
+      { id: 4, label: 'Decision Assessment', type: 'activity', icon: FileText, description: 'Final hiring team discussion' }
+    ],
+    agentic: 35,
+    automatic: 30,
+    human: 35
+  },
+  '4': {
+    activities: [
+      { id: 1, label: 'Offer Generation', type: 'automation', icon: Zap, description: 'Auto-create offer terms' },
+      { id: 2, label: 'Approval Flow', type: 'activity', icon: FileText, description: 'Executive sign-off' },
+      { id: 3, label: 'Offer Delivery', type: 'automation', icon: BarChart3, description: 'Send offer to candidate' },
+      { id: 4, label: 'Negotiations', type: 'activity', icon: FileText, description: 'Handle counter-offers' }
+    ],
+    agentic: 50,
+    automatic: 35,
+    human: 15
+  }
+};
+
+const StageDetailMap = ({ stageId, stageName, onBack }: StageDetailMapProps) => {
+  const stageConfig = STAGE_DATA[stageId] || STAGE_DATA['2'];
+  const activities = stageConfig.activities;
 
   return (
     <div className="flex-1 overflow-auto relative flex flex-col">
@@ -35,17 +79,17 @@ const StageDetailMap = ({ stageName, onBack }: StageDetailMapProps) => {
 <div className="flex items-center gap-2">
   <div className="flex items-center gap-1.5 px-2 py-1 rounded-md border border-gray-200 bg-white">
     <Bot className="w-3.5 h-3.5 text-indigo-500" />
-    <span className="text-xs text-gray-700">65% Agentic</span>
+    <span className="text-xs text-gray-700">{stageConfig.agentic}% Agentic</span>
   </div>
 
   <div className="flex items-center gap-1.5 px-2 py-1 rounded-md border border-gray-200 bg-white">
     <Cog className="w-3.5 h-3.5 text-orange-500" />
-    <span className="text-xs text-gray-700">20% Automatic</span>
+    <span className="text-xs text-gray-700">{stageConfig.automatic}% Automatic</span>
   </div>
 
   <div className="flex items-center gap-1.5 px-2 py-1 rounded-md border border-gray-200 bg-white">
     <Users className="w-3.5 h-3.5 text-green-500" />
-    <span className="text-xs text-gray-700">15% Human</span>
+    <span className="text-xs text-gray-700">{stageConfig.human}% Human</span>
   </div>
 </div>
 
