@@ -1,10 +1,6 @@
-import { Radio, Layers, Clock, ChevronRight } from 'lucide-react';
+import { Radio, Layers, Clock } from 'lucide-react';
 
-interface MapWidgetProps {
-  onStageSelect?: (stageName: string) => void;
-}
-
-const MapWidget = ({ onStageSelect }: MapWidgetProps) => {
+const MapWidget = () => {
   const stages = [
     { label: 'Application', count: 18, borderColor: 'border-green-300', iconColor: '#16a34a', time: '8m' },
     { label: 'Screening', count: 12, borderColor: 'border-green-300', iconColor: '#16a34a', time: '2h' },
@@ -34,14 +30,13 @@ const MapWidget = ({ onStageSelect }: MapWidgetProps) => {
                   </div>
                 )}
 
-                <button onClick={() => onStageSelect?.(stage.label)} className={`bg-white border-2 ${stage.borderColor} rounded-lg px-4 py-3 w-56 flex items-center gap-3 shadow-sm relative z-10 hover:shadow-md transition-shadow group text-left`}>
+                <div className={`bg-white border-2 ${stage.borderColor} rounded-lg px-4 py-3 w-56 flex items-center gap-3 shadow-sm relative z-10`}>
                   <div className="flex items-center gap-2 px-2 py-1 rounded-lg" style={{ backgroundColor: '#F4F6FA' }}>
                     <Layers className="w-4 h-4 text-gray-600" />
                     <span className="text-sm font-medium text-gray-600">1</span>
                   </div>
                   <span className="text-sm font-semibold text-gray-900">{stage.label}</span>
-                  <ChevronRight className="w-4 h-4 text-gray-400 group-hover:text-gray-600 transition-colors ml-auto" />
-                </button>
+                </div>
               </div>
             </div>
           ))}

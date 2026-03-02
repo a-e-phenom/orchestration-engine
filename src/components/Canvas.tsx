@@ -2,8 +2,6 @@ import { useState } from 'react';
 import WorkflowNode from './WorkflowNode';
 import ConnectionLine from './ConnectionLine';
 import SidePanelSection from './SidePanelSection';
-import MapWidget from './MapWidget';
-import StageMap from './StageMap';
 import Workroom from './Workroom';
 import Operations from './Operations';
 import DataPage from './DataPage';
@@ -18,11 +16,9 @@ interface Node {
 
 interface CanvasProps {
   activeTab: string;
-  selectedStage?: string | null;
-  onStageSelect?: (stageName: string) => void;
 }
 
-const Canvas = ({ activeTab, selectedStage, onStageSelect }: CanvasProps) => {
+const Canvas = ({ activeTab }: CanvasProps) => {
   const [nodes] = useState<Node[]>([
     { id: '1', label: 'Apply', step: 1 },
     { id: '2', label: 'Screening', step: 2, hasEye: true },
@@ -44,10 +40,6 @@ const Canvas = ({ activeTab, selectedStage, onStageSelect }: CanvasProps) => {
 
   if (activeTab === 'data') {
     return <DataPage />;
-  }
-
-  if (selectedStage) {
-    return <StageMap stageName={selectedStage} onBack={() => onStageSelect?.(null)} />;
   }
 
   return (
@@ -108,8 +100,71 @@ const Canvas = ({ activeTab, selectedStage, onStageSelect }: CanvasProps) => {
       </div>
 
       <div className="p-8 flex flex-col items-center min-h-full">
-        <div className="max-w-4xl mx-auto w-full">
-          <MapWidget onStageSelect={onStageSelect} />
+        <div className="max-w-4xl mx-auto">
+          <div className="flex flex-col items-center">
+            {/* Rule Evaluation Header */}
+            <div className="mb-0">
+              <button
+                onClick={() => {
+                  setShowRulePanel(true);
+                  setShowPanel(false);
+                  setSelectedNodeId(null);
+                }}
+                className="bg-white rounded-xl px-3 pb-2 pt-2.5 shadow-sm hover:bg-gray-50 transition-all w-full text-left" style={{
+                  border: showRulePanel ? '2px solid #4D3EE0' : '1px solid #E8EAEE',
+                  boxShadow: 'inset 0 3px 0 0 #BA4800'
+                }}
+                onMouseEnter={(e) => {
+                  if (!showRulePanel) {
+                    e.currentTarget.style.borderColor = '#4338ca';
+                  }
+                }}
+                onMouseLeave={(e) => {
+                  if (!showRulePanel) {
+                    e.currentTarget.style.borderColor = '#E8EAEE';
+                  }
+                }}>
+                <div className="flex items-center gap-2">
+                  <div className="flex items-center gap-1.5">
+                    <GitCompareArrows className="w-5 h-5" style={{ color: '#BA4800' }} />
+                    <span className="text-sm font-medium text-gray-700">Rule Evaluation</span>
+                    <span className="text-sm text-gray-500">(3)</span>
+                  </div>
+                </div>
+              </button>
+            </div>
+
+            {/* Connection line from header */}
+            <ConnectionLine />
+
+            {/* Workflow Nodes */}
+            <div className="flex flex-col gap-0" style={{ width: '264px' }}>
+              {nodes.map((node, index) => (
+                <div key={node.id} className="flex flex-col gap-0">
+                  <WorkflowNode
+                    label={node.label}
+                    step={node.step}
+                    hasEye={node.hasEye}
+                    onClick={() => {
+                      setSelectedNodeId(node.id);
+                      setShowPanel(false);
+                      setShowRulePanel(false);
+                    }}
+                    isSelected={selectedNodeId === node.id}
+                  />
+                  {index < nodes.length - 1 && <ConnectionLine />}
+                </div>
+              ))}
+            </div>
+
+            {/* Add Button */}
+            <div className="flex flex-col items-center gap-0">
+              <ConnectionLine isShort />
+              <button className="w-6 h-6 text-white rounded flex items-center justify-center transition-colors shadow-sm" style={{ backgroundColor: '#8C95A8' }}>
+                <Plus className="w-4 h-4" />
+              </button>
+            </div>
+          </div>
         </div>
       </div>
 
