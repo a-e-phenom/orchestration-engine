@@ -391,8 +391,7 @@ const Canvas = ({ activeTab }: CanvasProps) => {
                   {selectedNodeId === '3' && 'Standard interview stage with 2 interviews'}
                   {selectedNodeId === '4' && 'Final stage for offer preparation and approval'}
                 </p>
-              </div>
-                        <div className="px-6 py-4">
+                          <div className="px-6 py-4">
             <button
               onClick={() => {
                 setStageDetailView(selectedNodeId);
@@ -403,6 +402,8 @@ const Canvas = ({ activeTab }: CanvasProps) => {
               Open Subflow
             </button>
           </div>
+              </div>
+              
             </div>
             <button
               onClick={() => setSelectedNodeId(null)}
