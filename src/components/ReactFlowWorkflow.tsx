@@ -149,6 +149,7 @@ const ReactFlowWorkflow = ({ activities, stageId }: ReactFlowWorkflowProps) => {
   useEffect(() => {
     const newNodes: Node[] = [];
     const newEdges: Edge[] = [];
+    const centerX = -60;
 
     newNodes.push({
       id: 'start',
@@ -158,7 +159,7 @@ const ReactFlowWorkflow = ({ activities, stageId }: ReactFlowWorkflowProps) => {
         icon: Radio,
         description: 'Evaluates incoming cases',
       },
-      position: { x: 0, y: 0 },
+      position: { x: centerX, y: 0 },
       type: 'activity',
     });
 
@@ -204,7 +205,7 @@ const ReactFlowWorkflow = ({ activities, stageId }: ReactFlowWorkflowProps) => {
         icon: Check,
         description: 'Workflow complete',
       },
-      position: { x: 0, y: yPosition },
+      position: { x: centerX, y: yPosition },
       type: 'activity',
     });
 
