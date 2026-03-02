@@ -15,8 +15,6 @@ import ReactFlow, {
 } from 'reactflow';
 import 'reactflow/dist/style.css';
 import { Zap, FileText, BarChart3, Check, Bot, Radio, Plus } from 'lucide-react';
-// @ts-ignore
-import dagre from 'dagre';
 
 interface ActivityNode {
   id: string;
@@ -174,29 +172,51 @@ const nodeTypes = {
   activity: ActivityNodeComponent,
 };
 
-const getLayoutedElements = (nodes: Node[], edges: Edge[], direction = 'TB') => {
-  const dagreGraph = new dagre.graphlib.Graph();
-  dagreGraph.setDefaultEdgeLabel(() => ({}));
-  dagreGraph.setGraph({ rankdir: direction, nodesep: 120, ranksep: 160 });
+const getLayoutedElements = (nodes: Node[], edges: Edge[]) => {
+  const nodeHeight = 100;
+  const nodeWidth = 280;
+  const verticalGap = 160;
+  const horizontalGap = 120;
 
-  nodes.forEach((node) => {
-    dagreGraph.setNode(node.id, { width: 280, height: 100 });
+  const levels: { [key: string]: number } = {};
+  const width: { [key: string]: number } = {};
+
+  // Find the depth of each node in the graph
+  const calculateLevel = (nodeId: string, visited = new Set()): number => {
+    if (visited.has(nodeId)) return 0;
+    visited.add(nodeId);
+
+    const incomingEdges = edges.filter(e => e.target === nodeId);
+    if (incomingEdges.length === 0) return 0;
+
+    return 1 + Math.max(...incomingEdges.map(e => calculateLevel(e.source, visited)), 0);
+  };
+
+  nodes.forEach(node => {
+    levels[node.id] = calculateLevel(node.id);
   });
 
-  edges.forEach((edge) => {
-    dagreGraph.setEdge(edge.source, edge.target);
+  // Group nodes by level
+  const nodesByLevel: { [key: number]: string[] } = {};
+  nodes.forEach(node => {
+    const level = levels[node.id];
+    if (!nodesByLevel[level]) nodesByLevel[level] = [];
+    nodesByLevel[level].push(node.id);
   });
 
-  dagre.layout(dagreGraph);
-
+  // Position nodes
   return {
     nodes: nodes.map((node) => {
-      const nodeWithPosition = dagreGraph.node(node.id);
+      const level = levels[node.id];
+      const levelNodes = nodesByLevel[level];
+      const indexInLevel = levelNodes.indexOf(node.id);
+      const totalInLevel = levelNodes.length;
+
       return {
         ...node,
         position: {
-          x: nodeWithPosition.x - 140,
-          y: nodeWithPosition.y - 50,
+          x: (indexInLevel - (totalInLevel - 1) / 2) * (nodeWidth + horizontalGap),
+          y: level * (nodeHeight + verticalGap),
         },
       };
     }),
