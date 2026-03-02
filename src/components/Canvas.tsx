@@ -400,7 +400,7 @@ const Canvas = ({ activeTab }: CanvasProps) => {
             </button>
           </div>
 
-          <div className="px-6 py-4 border-b border-gray-200">
+          <div className="px-6 py-4">
             <button
               onClick={() => {
                 setStageDetailView(selectedNodeId);
