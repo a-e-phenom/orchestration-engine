@@ -1,5 +1,5 @@
-import { ArrowLeft, GitCompareArrows, Zap, FileText, BarChart3, Check, Bot, Cog, Users, Radio } from 'lucide-react';
-import ConnectionLine from './ConnectionLine';
+import { ArrowLeft, Zap, FileText, BarChart3, Check, Bot, Cog, Users, Radio } from 'lucide-react';
+import ReactFlowWorkflow from './ReactFlowWorkflow';
 
 interface StageDetailMapProps {
   stageId: string;
@@ -98,100 +98,11 @@ const StageDetailMap = ({ stageId, stageName, onBack }: StageDetailMapProps) => 
 </header>
 
 
-      <div className="flex-1 overflow-auto relative" style={{
-        backgroundImage: 'radial-gradient(circle, #e5e7eb 1px, transparent 1px)',
-        backgroundSize: '24px 24px',
-        backgroundColor: '#f9fafb'
-      }}>
-        <div className="p-8 flex flex-col items-center min-h-full">
-        <div className="max-w-4xl mx-auto w-full flex flex-col items-center">
-            {/* Rule Evaluation Header */}
-            <div className="mb-0">
-              <button className="bg-white rounded-xl px-3 pb-2 pt-2.5 shadow-sm hover:bg-gray-50 transition-all w-full text-left border border-[#E8EAEE]" style={{
-                boxShadow: 'inset 0 3px 0 0 #BA4800'
-              }}>
-                <div className="flex items-center gap-2">
-                  <GitCompareArrows className="w-5 h-5" style={{ color: '#BA4800' }} />
-                  <span className="text-sm font-medium text-gray-700">Rule Evaluation</span>
-                </div>
-              </button>
-            </div>
-
-            <ConnectionLine />
-
-            {/* Activities */}
-            <div className="flex flex-col gap-0" style={{ width: '280px' }}>
-              {activities.map((activity, index) => {
-                const ActivityIcon = activity.icon;
-                const isAgent = activity.type === 'agent';
-
-                if (isAgent) {
-                  return (
-                    <div key={activity.id} className="flex flex-col gap-0">
-                      <div className="relative border-2 border-dashed rounded-[12px]" style={{ borderColor: '#4C1D95' }}>
-                        <div className="relative" style={{
-                          padding: '3px',
-                          backgroundImage: 'linear-gradient(135deg, #818CF8 0%, #E9D5FF 100%)',
-                          borderRadius: '12px'
-                        }}>
-                          <button className="relative bg-white rounded-[9px] shadow-xs hover:shadow-md transition-all w-full">
-                            <div className="flex items-center justify-between p-3">
-                              <div className="flex flex-col gap-1.5">
-                                <div className="flex items-center gap-3">
-                                  <div className="flex items-center justify-center p-2 rounded-lg" style={{ backgroundColor: '#EAE8FB' }}>
-                                    <Bot className="w-4 h-4" style={{ color: '#5E48B8' }} />
-                                  </div>
-                                  <span className="text-sm font-medium text-gray-900">{activity.label}</span>
-                                </div>
-                                <span className="text-xs pb-1 pt-1.5" style={{ color: '#637085' }}>{activity.description}</span>
-                              </div>
-                            </div>
-                          </button>
-                        </div>
-                      </div>
-                      {index < activities.length - 1 && <ConnectionLine />}
-                    </div>
-                  );
-                }
-
-                return (
-                  <div key={activity.id} className="flex flex-col gap-0">
-                    <button className="bg-white border border-gray-200 rounded-xl shadow-xs hover:border-indigo-700 transition-colors">
-                      <div className="flex items-center justify-between p-3">
-                        <div className="flex flex-col gap-1.5">
-                          <div className="flex items-center gap-3">
-                            <div className="flex items-center justify-center p-2 rounded-lg" style={{ backgroundColor: '#EAE8FB' }}>
-                              <ActivityIcon className="w-4 h-4" style={{ color: '#5E48B8' }} />
-                            </div>
-                            <span className="text-sm font-medium text-gray-900">{activity.label}</span>
-                          </div>
-                          <span className="text-xs pb-1 pt-1.5" style={{ color: '#637085' }}>{activity.description}</span>
-                        </div>
-
-                      </div>
-                    </button>
-                    {index < activities.length - 1 && <ConnectionLine />}
-                  </div>
-                );
-              })}
-            </div>
-
-            {/* End Card */}
-            <div className="flex flex-col items-center gap-0">
-              <ConnectionLine />
-              <div className="bg-white rounded-xl px-3 pb-2 pt-2.5 shadow-sm w-full text-left border border-[#E8EAEE]" style={{
-                boxShadow: 'inset 0 3px 0 0 #16a34a'
-              }}>
-                <div className="flex items-center gap-2">
-                  <div className="flex items-center justify-center p-0 rounded-lg">
-                    <Check className="w-4 h-4" style={{ color: '#16a34a' }} />
-                  </div>
-                  <span className="text-sm font-medium text-gray-700">End</span>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
+      <div className="flex-1 overflow-hidden relative">
+        <ReactFlowWorkflow
+          activities={activities}
+          stageId={stageId}
+        />
       </div>
     </div>
   );
